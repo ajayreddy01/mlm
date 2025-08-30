@@ -2,24 +2,25 @@
 include '../includes/init.php';
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-    // Destroy session
-    $_SESSION = [];
-    session_destroy();
+  // Destroy session
+  $_SESSION = [];
+  session_destroy();
 
-    // Redirect to login
-    header("Location: index.php");
-    exit();
+  // Redirect to login
+  header("Location: index.php");
+  exit();
 }
 
 // If already logged in, redirect to dashboard
 if (!isset($_SESSION['userid'])) {
-    header("Location: index.php");
-    exit();
+  header("Location: index.php");
+  exit();
 }
 
 ?>
 <!DOCTYPE html>
-<html lang="en" > <!-- Add 'dark' here if you want default dark -->
+<html lang="en"> <!-- Add 'dark' here if you want default dark -->
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +55,7 @@ if (!isset($_SESSION['userid'])) {
       document.getElementById("mobileSidebar").classList.toggle("hidden");
     }
 
-    window.addEventListener("click", function(e) {
+    window.addEventListener("click", function (e) {
       const profileMenu = document.getElementById("profileMenu");
       const notifMenu = document.getElementById("notifMenu");
       const profileBtn = document.getElementById("profileBtn");
@@ -74,10 +75,12 @@ if (!isset($_SESSION['userid'])) {
     });
   </script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex text-gray-900 dark:text-gray-100">
 
   <!-- Sidebar (Desktop - Fixed) -->
-  <aside class="hidden md:flex md:flex-col fixed top-0 left-0 w-64 h-screen bg-green-700 dark:bg-green-900 text-white p-6 space-y-6">
+  <aside
+    class="hidden md:flex md:flex-col fixed top-0 left-0 w-64 h-screen bg-green-700 dark:bg-green-900 text-white p-6 space-y-6">
     <div class="flex items-center gap-3">
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
@@ -100,7 +103,8 @@ if (!isset($_SESSION['userid'])) {
   </aside>
 
   <!-- Mobile Sidebar (Overlay) -->
-  <div id="mobileSidebar" class="hidden fixed top-0 left-0 w-64 h-full bg-green-700 dark:bg-green-900 text-white p-6 space-y-6 z-50">
+  <div id="mobileSidebar"
+    class="hidden fixed top-0 left-0 w-64 h-full bg-green-700 dark:bg-green-900 text-white p-6 space-y-6 z-50">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
@@ -136,20 +140,25 @@ if (!isset($_SESSION['userid'])) {
       </div>
       <div class="flex items-center gap-4">
         <button onclick="toggleTheme()" class="bg-gray-200 dark:bg-yellow-400 px-3 py-1 rounded-lg">🌗</button>
-        
+
         <!-- Notifications -->
         <div class="relative">
           <button id="notifBtn" onclick="toggleNotifMenu()" class="relative cursor-pointer">
             🔔
             <span class="absolute -top-1 -right-1 bg-red-500 text-xs text-white px-1 rounded-full">3</span>
           </button>
-          <div id="notifMenu" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
+          <div id="notifMenu"
+            class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
             <div class="p-3 border-b dark:border-gray-700 font-semibold">Notifications</div>
             <div class="max-h-60 overflow-y-auto">
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500 in Wallet</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat field" is pending</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124 starts today</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank account details</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500
+                in Wallet</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat
+                field" is pending</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124
+                starts today</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank
+                account details</a>
             </div>
             <div class="p-2 text-center border-t dark:border-gray-700">
               <a href="notifications.php" class="text-green-600 dark:text-green-400 text-sm font-medium">View All</a>
@@ -159,88 +168,113 @@ if (!isset($_SESSION['userid'])) {
 
         <!-- Profile -->
         <div class="relative">
-          <img id="profileBtn" onclick="toggleProfileMenu()" 
-               src="images/profile.jpg" 
-               class="w-10 h-10 rounded-full border shadow cursor-pointer">
-          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
+          <img id="profileBtn" onclick="toggleProfileMenu()" src="images/profile.jpg"
+            class="w-10 h-10 rounded-full border shadow cursor-pointer">
+          <div id="profileMenu"
+            class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
             <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a>
-            <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp Group</a>
+            <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp
+              Group</a>
             <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️ Settings</a>
-            <a href="dashboard.php?logout=true" class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
+            <a href="dashboard.php?logout=true"
+              class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
           </div>
         </div>
       </div>
     </header>
 
 
-    <!-- Rewards Section -->
-    <section class="p-6">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-        <h2 class="text-lg font-semibold text-green-700 dark:text-green-300 mb-2">🎁 Invite Rewards</h2>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Invite valid members every day and you will be automatically rewarded.
-        </p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl shadow">
-            <p class="text-gray-500 dark:text-gray-300 text-sm">Invited</p>
-            <p class="text-xl font-bold text-green-700 dark:text-green-400">0</p>
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Invite Task</h3>
+
+      <section class="p-4 sm:p-6 flex-1 flex flex-col items-center text-center">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 max-w-2xl w-full">
+          <h2 class="text-lg font-semibold text-green-700 dark:text-green-300">Earn Rewards!</h2>
+          <p class="text-gray-600 dark:text-gray-400 text-sm mt-2">
+            Invite valid members every day and you will be automatically rewarded.
+          </p>
+
+          <?php
+          $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
+          ?>
+
+          <!-- Referral URL Box -->
+          <div
+            class="bg-gray-50 dark:bg-gray-700 border border-green-300 rounded-xl p-4 mt-6 flex items-center justify-between">
+            <span id="referralLink" class="font-bold text-green-700 dark:text-green-300 text-sm break-all">
+              <?php echo $referralUrl; ?>
+            </span>
+            <button onclick="copyReferral()"
+              class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
+              Copy
+            </button>
           </div>
-          <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl shadow">
-            <p class="text-gray-500 dark:text-gray-300 text-sm">Per Reward</p>
-            <p class="text-xl font-bold text-blue-600">₹100</p>
+
+          <!-- Reward Stats -->
+          <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
+              <p class="text-gray-500 dark:text-gray-300 text-sm">Total Refers</p>
+              <p class="text-xl font-bold text-green-700 dark:text-green-300">
+                <?php echo (int) $refer->getTotalReferrals($_SESSION['userid']); ?>
+              </p>
+            </div>
+            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
+              <p class="text-gray-500 dark:text-gray-300 text-sm">Active Refers</p>
+              <p class="text-xl font-bold text-green-700 dark:text-green-300">
+                <?php echo (int) $refer->getTodaysReferrals($_SESSION['userid']); ?>
+              </p>
+            </div>
+            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
+              <p class="text-gray-500 dark:text-gray-300 text-sm">Reward / Invite</p>
+              <p class="text-xl font-bold text-green-700 dark:text-green-300">₹100</p>
+            </div>
+            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
+              <p class="text-gray-500 dark:text-gray-300 text-sm">Total Reward</p>
+              <p class="text-xl font-bold text-green-700 dark:text-green-300">
+                ₹<?php echo (int) $refer->getTotalReferrals($_SESSION['userid']) * 100; ?>
+              </p>
+            </div>
           </div>
-          <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl shadow">
-            <p class="text-gray-500 dark:text-gray-300 text-sm">Progress</p>
-            <p class="text-xl font-bold text-yellow-600">0 / Edited</p>
-          </div>
-          <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl shadow">
-            <p class="text-gray-500 dark:text-gray-300 text-sm">Total Reward</p>
-            <p class="text-xl font-bold text-purple-600">₹0</p>
+
+          <!-- Share Options -->
+          <div class="mt-6 space-y-3">
+            <a href="https://wa.me/?text=Join%20Agri%20Invest%20using%20my%20link%20<?php echo urlencode($referralUrl); ?>"
+              target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+              Share on WhatsApp
+            </a>
+            <a href="sms:?body=Join%20Agri%20Invest%20using%20my%20link%20<?php echo urlencode($referralUrl); ?>"
+              class="block w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">
+              Share via SMS
+            </a>
           </div>
         </div>
-        <div class="mt-4 flex justify-center">
-          <a href="invite.php" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow-md">Invite People</a>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Task List -->
-    <section class="p-6 flex-1">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-        <h2 class="text-lg font-semibold text-green-700 dark:text-green-300 mb-4">Today’s Tasks</h2>
+      <script>
+        function copyReferral() {
+          let link = document.getElementById("referralLink").innerText;
+          navigator.clipboard.writeText(link).then(() => {
+            // ✅ toast popup instead of alert
+            let toast = document.createElement("div");
+            toast.innerText = "Referral link copied!";
+            toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+          });
+        }
+      </script>
 
-        <ul class="space-y-4">
-          <li class="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl shadow-sm">
-            <label class="flex items-center space-x-3">
-              <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
-              <span class="text-gray-700 dark:text-gray-200">Water wheat field</span>
-            </label>
-            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Pending</span>
-          </li>
-          <li class="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl shadow-sm">
-            <label class="flex items-center space-x-3">
-              <input type="checkbox" class="w-5 h-5 text-green-600 rounded" checked>
-              <span class="line-through text-gray-400">Check irrigation pump</span>
-            </label>
-            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Done</span>
-          </li>
-          <li class="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl shadow-sm">
-            <label class="flex items-center space-x-3">
-              <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
-              <span class="text-gray-700 dark:text-gray-200">Buy fertilizer from store</span>
-            </label>
-            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Pending</span>
-          </li>
-          <li class="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl shadow-sm">
-            <label class="flex items-center space-x-3">
-              <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
-              <span class="text-gray-700 dark:text-gray-200">Feed livestock</span>
-            </label>
-            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Pending</span>
-          </li>
-        </ul>
-      </div>
-    </section>
+    </div>
+
+    <script>
+      function copyToClipboard(btn) {
+        let link = btn.getAttribute("data-refer_link");
+        navigator.clipboard.writeText(link).then(() => {
+          alert("Referral link copied: " + link);
+        });
+      }
+    </script>
+
   </main>
 
   <!-- Bottom Navigation (Mobile only) -->
@@ -252,6 +286,7 @@ if (!isset($_SESSION['userid'])) {
     <a href="profile.php">👤</a>
   </nav>
 
-  
+
 </body>
+
 </html>
