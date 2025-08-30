@@ -52,13 +52,13 @@ class admin
                 ];
             }
 
-            if (!password_verify($password, $admin['password'])) {
-                return [
-                    'success' => false,
-                    'error' => 'wrong_password',
-                    'details' => null
-                ];
+            if (password_verify($password, $admin['password'])) {
+                 session_start();
+                $_SESSION['admin_id'] = $admin['id'];
+                $_SESSION['admin_email'] = $admin['email'];
+               
             }
+            
 
             // Success
             header("Location: " . BASE_URL . "admin/dashboard.php");
