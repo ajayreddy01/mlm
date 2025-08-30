@@ -1,3 +1,48 @@
+<?php
+
+include '../includes/init.php';
+if (isset($_SESSION['userid'])) {
+  // If not logged in, redirect to index.php
+  header("Location: index.php");
+  exit(); // Stop further execution
+}
+if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
+  // Destroy the session
+  session_unset(); // Unset all session variables
+  session_destroy(); // Destroy the session
+
+  // Redirect to the login page or any other page
+  header("Location: index.php"); // Replace 'index.php' with your desired redirect page
+  exit();
+  if (isset($_POST['submit'])) {
+    $name = checkinput($_POST['name']);
+    $mobile = checkinput($_POST['phone_number']);
+    $password = checkinput($_POST['password']);
+    $invite_code = checkinput($_POST['invite_code']);
+    if (!empty($invite_code)) {
+
+        if ($user->check_invite_code($invite_code) == true) {
+
+            $user->userSignup($name, $mobile, $password, $invite_code);
+            echo 'error';
+        } else {
+
+            $user->userSignup($name, $mobile, $password, null);
+            echo 'error2';
+        }
+    } else {
+
+        $user->userSignup($name, $mobile, $password, null);
+        echo 'error3';
+    }
+
+
+    header("Location: " . BASE_URL . "user/index.php");
+    exit();
+}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -37,7 +82,7 @@
 </div>
 
     <!-- Form -->
-    <form id="registerForm" class="space-y-5">
+    <form id="registerForm" class="space-y-5" action="" method="post">
       <!-- Name -->
       <div class="relative">
         <input type="text" id="name" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">

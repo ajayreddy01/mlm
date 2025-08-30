@@ -1,4 +1,20 @@
-<!DOCTYPE html>
+<?php
+include '../includes/init.php';
+
+if (!isset($_SESSION['userid'])) {
+    // If not logged in, redirect to index.php
+    header("Location: login.php");
+    exit(); // Stop further execution
+}
+if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
+    // Destroy the session
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+
+    // Redirect to the login page or any other page
+    header("Location: login.php"); // Replace 'index.php' with your desired redirect page
+    exit();
+}?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
