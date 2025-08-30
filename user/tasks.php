@@ -184,51 +184,50 @@ if (!isset($_SESSION['userid'])) {
     </header>
 
 
+
+
     <div class="container-xxl flex-grow-1 container-p-y">
       <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Invite Task</h3>
 
-      <div class="container-xxl flex-grow-1 container-p-y">
-        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Invite Task</h3>
+      <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php
+        // Fetch invite tasks (schemes) from API
+        $apiUrl = "http://agriinvestharvest.com/api/user/getallschemes";
+        $response = file_get_contents($apiUrl);
+        $schemes = json_decode($response, true);
 
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <?php
-          // Fetch invite tasks (schemes) from API
-          $apiUrl = "http://agriinvestharvest.com/api/user/getallschemes";
-          $response = file_get_contents($apiUrl);
-          $schemes = json_decode($response, true);
+        // Get today's referrals for this user
+        $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
+        $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
-          // Get today's referrals for this user
-          $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
-          $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
-
-          if ($schemes && is_array($schemes)) {
-            foreach ($schemes as $row) {
-              // Check task completion
-              if ($row['number_of_refers'] > $todayReferred) {
-                $button = '
+        if ($schemes && is_array($schemes)) {
+          foreach ($schemes as $row) {
+            // Check task completion
+            if ($row['number_of_refers'] > $todayReferred) {
+              $button = '
             <button 
               data-refer_link="' . $referralUrl . '" 
               onclick="copyToClipboard(this)" 
               class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
               Invite Now
             </button>';
-              } else {
-                $button = '
+            } else {
+              $button = '
             <button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
               Completed
             </button>';
-              }
+            }
 
-              // Prize logic
-              if ((int) $row['scheme_name'] == 40) {
-                $prize = '<h4 class="text-red-500 font-bold">1GM GOLD COIN</h4>';
-              } elseif ((int) $row['scheme_name'] == 50) {
-                $prize = '<h4 class="text-red-500 font-bold">5G Smart Phone</h4>';
-              } else {
-                $prize = '<h4 class="text-red-500 font-bold">₹' . ((int) $row['scheme_name'] * 100) . '</h4>';
-              }
+            // Prize logic
+            if ((int) $row['scheme_name'] == 40) {
+              $prize = '<h4 class="text-red-500 font-bold">1GM GOLD COIN</h4>';
+            } elseif ((int) $row['scheme_name'] == 50) {
+              $prize = '<h4 class="text-red-500 font-bold">5G Smart Phone</h4>';
+            } else {
+              $prize = '<h4 class="text-red-500 font-bold">₹' . ((int) $row['scheme_name'] * 100) . '</h4>';
+            }
 
-              echo '
+            echo '
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
           <div>
             <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
@@ -253,44 +252,44 @@ if (!isset($_SESSION['userid'])) {
           </div>
           ' . $button . '
         </div>';
-            }
-          } else {
-            echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
           }
-          ?>
-        </section>
-      </div>
-
-      <script>
-        function copyToClipboard(btn) {
-          let link = btn.getAttribute("data-refer_link");
-          navigator.clipboard.writeText(link).then(() => {
-            // ✅ toast notification
-            let toast = document.createElement("div");
-            toast.innerText = "Referral link copied!";
-            toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-fade-in";
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-          });
+        } else {
+          echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
         }
-      </script>
-
-
-      <script>
-        function copyReferral() {
-          let link = document.getElementById("referralLink").innerText;
-          navigator.clipboard.writeText(link).then(() => {
-            // ✅ toast popup instead of alert
-            let toast = document.createElement("div");
-            toast.innerText = "Referral link copied!";
-            toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-          });
-        }
-      </script>
-
+        ?>
+      </section>
     </div>
+
+    <script>
+      function copyToClipboard(btn) {
+        let link = btn.getAttribute("data-refer_link");
+        navigator.clipboard.writeText(link).then(() => {
+          // ✅ toast notification
+          let toast = document.createElement("div");
+          toast.innerText = "Referral link copied!";
+          toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-fade-in";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+        });
+      }
+    </script>
+
+
+    <script>
+      function copyReferral() {
+        let link = document.getElementById("referralLink").innerText;
+        navigator.clipboard.writeText(link).then(() => {
+          // ✅ toast popup instead of alert
+          let toast = document.createElement("div");
+          toast.innerText = "Referral link copied!";
+          toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+        });
+      }
+    </script>
+
+
 
     <script>
       function copyToClipboard(btn) {
