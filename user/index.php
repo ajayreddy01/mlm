@@ -21,7 +21,7 @@
         <!-- Title + Subtitle -->
         <div>
           <h1 class="text-2xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-400 bg-clip-text text-transparent">
-            FarmerApp
+            Agri Invest
           </h1>
           <p class="text-xs text-gray-500 dark:text-gray-400">Secure login to your account</p>
         </div>

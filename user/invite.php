@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invite Friends - FarmerApp</title>
+  <title>Invite Friends - Agri Invest</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' }
@@ -59,7 +59,7 @@
     <div class="flex items-center gap-3">
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
-        <p class="text-lg font-bold">🌱 FarmerApp</p>
+        <p class="text-lg font-bold">🌱 Agri Invest</p>
         <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
       </div>
     </div>
@@ -83,7 +83,7 @@
       <div class="flex items-center gap-3">
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
         <div>
-          <p class="text-lg font-bold">🌱 FarmerApp</p>
+          <p class="text-lg font-bold">🌱 Agri Invest</p>
           <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
         </div>
       </div>
@@ -186,8 +186,8 @@
 
         <!-- Share Options -->
         <div class="mt-6 space-y-3">
-          <a href="https://wa.me/?text=Join%20FarmerApp%20using%20my%20code%206855083b" target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Share on WhatsApp</a>
-          <a href="sms:?body=Join%20FarmerApp%20using%20my%20code%206855083b" class="block w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Share via SMS</a>
+          <a href="https://wa.me/?text=Join%20Agri Invest%20using%20my%20code%206855083b" target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Share on WhatsApp</a>
+          <a href="sms:?body=Join%20Agri Invest%20using%20my%20code%206855083b" class="block w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Share via SMS</a>
         </div>
       </div>
     </section>

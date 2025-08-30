@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Password - FarmerApp</title>
+  <title>Reset Password - Agri Invest</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen">
@@ -13,7 +13,7 @@
     <!-- Header -->
     <div class="text-center">
       <img src="images/profile.jpg" class="w-16 h-16 rounded-full border-2 border-green-600 shadow mx-auto">
-      <h1 class="text-2xl font-bold text-green-700 dark:text-green-400 mt-2">🌱 FarmerApp</h1>
+      <h1 class="text-2xl font-bold text-green-700 dark:text-green-400 mt-2">🌱 Agri Invest</h1>
       <p class="text-sm text-gray-500 dark:text-gray-400">Set a new password</p>
     </div>
 <!-- Success Alert -->

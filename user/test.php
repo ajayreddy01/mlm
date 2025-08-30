@@ -18,7 +18,7 @@
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex items-center justify-center min-h-screen transition-colors">
 
   <div class="p-6 rounded-2xl shadow bg-white dark:bg-gray-800 text-center space-y-4 transition-colors">
-    <h1 class="text-xl font-bold text-green-700 dark:text-green-400">🌱 FarmerApp</h1>
+    <h1 class="text-xl font-bold text-green-700 dark:text-green-400">🌱 Agri Invest</h1>
     <p class="text-gray-600 dark:text-gray-300">Toggle between Light & Dark Theme</p>
     <button onclick="toggleTheme()" 
             class="bg-gray-200 dark:bg-yellow-400 px-3 py-2 rounded-lg transition-colors">

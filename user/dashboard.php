@@ -60,7 +60,7 @@
     <div class="flex items-center gap-3">
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
-        <p class="text-lg font-bold">🌱 FarmerApp</p>
+        <p class="text-lg font-bold">🌱 Agri Invest</p>
         <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
       </div>
     </div>
@@ -84,7 +84,7 @@
       <div class="flex items-center gap-3">
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
         <div>
-          <p class="text-lg font-bold">🌱 FarmerApp</p>
+          <p class="text-lg font-bold">🌱 Agri Invest</p>
           <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
         </div>
       </div>
