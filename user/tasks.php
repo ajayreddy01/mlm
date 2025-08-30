@@ -209,7 +209,7 @@ if (!isset($_SESSION['userid'])) {
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
-      if (!empty($schemes) && is_array($schemes)) {
+     
         foreach ($schemes as $row) {
           // ✅ Completion logic fixed
           if ($todayReferred < $row['number_of_refers']) {
@@ -256,9 +256,7 @@ if (!isset($_SESSION['userid'])) {
         ' . $button . '
       </div>';
         }
-      } else {
-        echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
-      }
+      
       ?>
     </section>
 
