@@ -205,7 +205,7 @@ if (!isset($_SESSION['userid'])) {
       $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
       $response = fetchApi($apiUrl);
       $schemes = json_decode($response, true);
- 
+      var_dump(value: $schemes);
       // User referral progress + referral link
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
