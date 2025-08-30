@@ -2,24 +2,25 @@
 include '../includes/init.php';
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-    // Destroy session
-    $_SESSION = [];
-    session_destroy();
+  // Destroy session
+  $_SESSION = [];
+  session_destroy();
 
-    // Redirect to login
-    header("Location: index.php");
-    exit();
+  // Redirect to login
+  header("Location: index.php");
+  exit();
 }
 
 // If already logged in, redirect to dashboard
 if (!isset($_SESSION['userid'])) {
-    header("Location: index.php");
-    exit();
+  header("Location: index.php");
+  exit();
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en" class="transition-colors duration-300">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -53,7 +54,7 @@ if (!isset($_SESSION['userid'])) {
       document.getElementById("mobileSidebar").classList.toggle("hidden");
     }
 
-    window.addEventListener("click", function(e) {
+    window.addEventListener("click", function (e) {
       const profileMenu = document.getElementById("profileMenu");
       const notifMenu = document.getElementById("notifMenu");
       const profileBtn = document.getElementById("profileBtn");
@@ -73,10 +74,12 @@ if (!isset($_SESSION['userid'])) {
     });
   </script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col text-gray-900 dark:text-gray-100">
 
   <!-- Sidebar (Desktop - Fixed) -->
-  <aside class="hidden md:flex md:flex-col fixed top-0 left-0 w-64 h-screen bg-green-700 dark:bg-green-900 text-white p-6 space-y-6">
+  <aside
+    class="hidden md:flex md:flex-col fixed top-0 left-0 w-64 h-screen bg-green-700 dark:bg-green-900 text-white p-6 space-y-6">
     <div class="flex items-center gap-3">
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
@@ -100,7 +103,8 @@ if (!isset($_SESSION['userid'])) {
 
   <!-- Mobile Sidebar (Overlay) -->
   <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black/50 z-40" onclick="toggleSidebar()"></div>
-  <div id="mobileSidebar" class="fixed top-0 left-0 w-64 h-full bg-green-700 dark:bg-green-900 text-white p-6 space-y-6 z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
+  <div id="mobileSidebar"
+    class="fixed top-0 left-0 w-64 h-full bg-green-700 dark:bg-green-900 text-white p-6 space-y-6 z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
@@ -136,20 +140,25 @@ if (!isset($_SESSION['userid'])) {
       </div>
       <div class="flex items-center gap-4">
         <button onclick="toggleTheme()" class="bg-gray-200 dark:bg-yellow-400 px-3 py-1 rounded-lg">🌗</button>
-        
+
         <!-- Notifications -->
         <div class="relative">
           <button id="notifBtn" onclick="toggleNotifMenu()" class="relative cursor-pointer">
             🔔
             <span class="absolute -top-1 -right-1 bg-red-500 text-xs text-white px-1 rounded-full">3</span>
           </button>
-          <div id="notifMenu" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
+          <div id="notifMenu"
+            class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
             <div class="p-3 border-b dark:border-gray-700 font-semibold">Notifications</div>
             <div class="max-h-60 overflow-y-auto">
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500 in Wallet</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat field" is pending</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124 starts today</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank account details</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500
+                in Wallet</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat
+                field" is pending</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124
+                starts today</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank
+                account details</a>
             </div>
             <div class="p-2 text-center border-t dark:border-gray-700">
               <a href="notifications.php" class="text-green-600 dark:text-green-400 text-sm font-medium">View All</a>
@@ -159,14 +168,16 @@ if (!isset($_SESSION['userid'])) {
 
         <!-- Profile -->
         <div class="relative">
-          <img id="profileBtn" onclick="toggleProfileMenu()" 
-               src="images/profile.jpg" 
-               class="w-10 h-10 rounded-full border shadow cursor-pointer">
-          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
+          <img id="profileBtn" onclick="toggleProfileMenu()" src="images/profile.jpg"
+            class="w-10 h-10 rounded-full border shadow cursor-pointer">
+          <div id="profileMenu"
+            class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
             <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a>
-            <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp Group</a>
+            <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp
+              Group</a>
             <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️ Settings</a>
-            <a href="dashboard.php?logout=true" class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
+            <a href="dashboard.php?logout=true"
+              class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
           </div>
         </div>
       </div>
@@ -176,63 +187,55 @@ if (!isset($_SESSION['userid'])) {
     <!-- Page Content -->
     <div class="max-w-screen-xl mx-auto w-full px-4 py-6 space-y-8">
 
-     <!-- Lucky Draw Card -->
-<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-    
-    <!-- Banner Image -->
-    <div class="h-40 w-full">
-      <img src="images/luckydraw.png" 
-           alt="Lucky Draw Banner" 
-           class="w-full h-full object-cover">
-    </div>
+      <!-- Lucky Draw Cards -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <?php
+        // Fetch lotteries from API
+        $apiUrl = "http://laxfuel.in/api/user/getalllottery";
+        $response = file_get_contents($apiUrl);
+        $lotteries = json_decode($response, true);
 
-    <!-- Card Content -->
-    <div class="p-6 text-center">
-      <h2 class="text-xl font-bold text-green-700 dark:text-green-400">Lucky Draw #124124</h2>
-      <p class="text-gray-500 dark:text-gray-400 text-sm mb-3">Try your luck and win big! 🍀</p>
+        if ($lotteries && is_array($lotteries)) {
+          foreach ($lotteries as $row) {
+            echo '
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+        <!-- Banner Image -->
+        <div class="h-40 w-full">
+          <img src="images/luckydraw.png" 
+               alt="Lucky Draw Banner" 
+               class="w-full h-full object-cover">
+        </div>
 
-      <div class="space-y-2 text-gray-700 dark:text-gray-300 text-sm">
-        <p><span class="font-medium">Entry Fee:</span> ₹123</p>
-        <p><span class="font-medium">Cycle:</span> Daily</p>
-        <p><span class="font-medium">Prize:</span> ₹12434</p>
-      </div>
+        <!-- Card Content -->
+        <div class="p-6 text-center">
+          <h2 class="text-xl font-bold text-green-700 dark:text-green-400">' . htmlspecialchars($row['name']) . '</h2>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mb-3">' . htmlspecialchars($row['description'] ?? "Try your luck and win big! 🍀") . '</p>
 
-      <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">
-        Join Lucky Draw
-      </button>
-    </div>
-  </div>
-   <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-    
-    <!-- Banner Image -->
-    <div class="h-40 w-full">
-      <img src="images/luckydraw2.jpg" 
-           alt="Lucky Draw Banner" 
-           class="w-full h-full object-cover">
-    </div>
+          <div class="space-y-2 text-gray-700 dark:text-gray-300 text-sm">
+            <p><span class="font-medium">Entry Fee:</span> ₹' . htmlspecialchars($row['ticket']) . '</p>
+            <p><span class="font-medium">Cycle:</span> ' . htmlspecialchars($row['type']) . '</p>
+            <p><span class="font-medium">Prize:</span> ₹' . htmlspecialchars($row['winning']) . '</p>
+          </div>
 
-    <!-- Card Content -->
-    <div class="p-6 text-center">
-      <h2 class="text-xl font-bold text-green-700 dark:text-green-400">Lucky Draw #124524</h2>
-      <p class="text-gray-500 dark:text-gray-400 text-sm mb-3">Try your luck and win big! 🍀</p>
-
-      <div class="space-y-2 text-gray-700 dark:text-gray-300 text-sm">
-        <p><span class="font-medium">Entry Fee:</span> ₹153</p>
-        <p><span class="font-medium">Cycle:</span> Daily</p>
-        <p><span class="font-medium">Prize:</span> ₹12434</p>
-      </div>
-
-      <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">
-        Join Lucky Draw
-      </button>
-    </div>
-  </div>
-</section>
+          <button onclick="buylottery(event)" 
+                  data-id="' . htmlspecialchars($row['id']) . '" 
+                  data-userid="' . htmlspecialchars($_SESSION['userid']) . '" 
+                  data-amount="' . htmlspecialchars($row['ticket']) . '" 
+                  class="mt-4 bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">
+            Join Lucky Draw
+          </button>
+        </div>
+      </div>';
+          }
+        } else {
+          echo '<div class="col-span-2 text-center text-gray-500 dark:text-gray-400">No lotteries available at the moment.</div>';
+        }
+        ?>
+      </section>
 
 
       <!-- Lucky Draw History -->
-      <section>
+      <section class="mt-8">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Lucky Draw History</h2>
         </div>
@@ -249,37 +252,54 @@ if (!isset($_SESSION['userid'])) {
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td class="p-3">#201</td>
-                <td class="p-3">Lucky Draw #124124</td>
-                <td class="p-3 text-right text-green-600 font-medium">₹123</td>
-                <td class="p-3">#T1001</td>
-                <td class="p-3"><span class="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 px-2 py-1 rounded-lg text-xs">Active</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td class="p-3">#202</td>
-                <td class="p-3">Lucky Draw #124124</td>
-                <td class="p-3 text-right text-green-600 font-medium">₹123</td>
-                <td class="p-3">#T1002</td>
-                <td class="p-3"><span class="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300 px-2 py-1 rounded-lg text-xs">Pending</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td class="p-3">#203</td>
-                <td class="p-3">Lucky Draw #124124</td>
-                <td class="p-3 text-right text-green-600 font-medium">₹123</td>
-                <td class="p-3">#T1003</td>
-                <td class="p-3"><span class="bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 px-2 py-1 rounded-lg text-xs">Lost</span></td>
-              </tr>
+              <?php
+              $data = $user->getlotterydata($_SESSION['userid']);
+              if ($data && count($data) > 0) {
+                foreach ($data as $row) {
+                  // Status badge color
+                  $statusClass = '';
+                  switch (strtolower($row['status'])) {
+                    case 'active':
+                      $statusClass = 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300';
+                      break;
+                    case 'pending':
+                      $statusClass = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300';
+                      break;
+                    case 'lost':
+                    case 'cancelled':
+                      $statusClass = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300';
+                      break;
+                    default:
+                      $statusClass = 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-300';
+                  }
+
+                  echo '
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <td class="p-3">#' . htmlspecialchars($row['id']) . '</td>
+              <td class="p-3">' . htmlspecialchars($row['name']) . '</td>
+              <td class="p-3 text-right text-green-600 font-medium">₹' . htmlspecialchars($row['price']) . '</td>
+              <td class="p-3">#' . htmlspecialchars($row['ticket_number']) . '</td>
+              <td class="p-3">
+                <span class="' . $statusClass . ' px-2 py-1 rounded-lg text-xs">' . ucfirst($row['status']) . '</span>
+              </td>
+            </tr>';
+                }
+              } else {
+                echo '<tr><td colspan="5" class="p-3 text-center text-gray-500 dark:text-gray-400">No lottery history found.</td></tr>';
+              }
+              ?>
             </tbody>
           </table>
         </div>
       </section>
+
     </div>
 
-    </main>
+  </main>
 
   <!-- Bottom nav (mobile) -->
-  <nav class="fixed bottom-0 left-0 right-0 z-30 bg-green-700 dark:bg-green-900 text-white flex justify-around py-3 md:hidden shadow-lg">
+  <nav
+    class="fixed bottom-0 left-0 right-0 z-30 bg-green-700 dark:bg-green-900 text-white flex justify-around py-3 md:hidden shadow-lg">
     <a href="dashboard.php">🏠</a>
     <a href="wallet.php" class="font-bold">💰</a>
     <a href="plans.php">📋</a>
@@ -296,4 +316,5 @@ if (!isset($_SESSION['userid'])) {
     }
   </script>
 </body>
+
 </html>
