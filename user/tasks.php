@@ -17,6 +17,8 @@ if (!isset($_SESSION['userid'])) {
   exit();
 }
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
+$walletdata = $wallet->getWalletBalance($_SESSION['userid']);
+$userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 ?>
 <!DOCTYPE html>
 <html lang="en"> <!-- Add 'dark' here if you want default dark -->

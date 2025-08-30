@@ -17,6 +17,7 @@ if (!isset($_SESSION['userid'])) {
     exit();
 }
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
+$userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 ?>
 <!DOCTYPE html>
 <html lang="en">

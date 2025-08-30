@@ -16,7 +16,8 @@ if (!isset($_SESSION['userid'])) {
   header("Location: index.php");
   exit();
 }
-
+$walletdata = $wallet->getWalletBalance($_SESSION['userid']);
+$userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="transition-colors duration-300">
