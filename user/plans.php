@@ -239,7 +239,7 @@ if (!isset($_SESSION['userid'])) {
             loading: false,
 
             loadPlans() {
-              fetch("http://agriinvestharvest.com/api/user/getallplans")
+              fetch("https://agriinvestharvest.com/api/user/getallplans")
                 .then(res => res.json())
                 .then(data => this.plans = data)
                 .catch(err => console.error("Error loading plans:", err));
