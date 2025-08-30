@@ -190,27 +190,41 @@ if (!isset($_SESSION['userid'])) {
     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Invite Task</h3>
 
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <?php
-  // Fetch API
-  function fetchApi($url) {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $res = curl_exec($ch);
-    curl_close($ch);
-    return $res;
-  }
+      <?php
+      // Fetch API
+      function fetchApi($url)
+      {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        return $res;
+      }
 
-  $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
-  $response = fetchApi($apiUrl);
-  $schemes = json_decode($response, true);
 
-  // User referral link
-  $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
+      $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
+      $response = fetchApi($apiUrl);
+      $schemes = json_decode($response, true);
+      var_dump(value: $schemes);
+      // User referral progress + referral link
+     
+      var_dump(value: $schemes);
+      if (!empty($schemes)) {
+       var_dump(value: $schemes);
+        foreach ($schemes as $row) {
+          var_dump($row);
+          // Completion logic
+         
 
-  if (!empty($schemes) && is_array($schemes)) {
-    foreach ($schemes as $row) {
-      echo '
+        
+            $inviteBtn = '
+          <button class="w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
+            ✅ Completed
+          </button>';
+          
+
+          echo '
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
         <div>
           <h5 class="text-lg font-bold text-green-700 dark:text-green-300 mb-2">' . htmlspecialchars($row['scheme_name']) . '</h5>
@@ -218,49 +232,64 @@ if (!isset($_SESSION['userid'])) {
             Invite <span class="font-bold">' . htmlspecialchars($row['number_of_refers']) . '</span> members and earn 
             <span class="font-bold text-green-600">₹' . htmlspecialchars($row['winning_prize']) . '</span>
           </p>
+
+          <!-- Progress -->
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-3">
+            
+          </div>
+
         </div>
 
         <div class="space-y-2">
-          <!-- Copy Invite Link -->
-          <button data-refer_link="' . $referralUrl . '" 
-                  onclick="copyToClipboard(this)" 
-                  class="w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
-            📋 Copy Invite Link
-          </button>
-
-          <!-- WhatsApp Share -->
+          ' . $inviteBtn . '
           <a href="https://wa.me/?text=Join%20AgriInvest%20using%20my%20link:%20' . urlencode($referralUrl) . '" 
              target="_blank"
              class="block w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition">
             💬 Share on WhatsApp
           </a>
-
-          <!-- SMS Share -->
           <a href="sms:?body=Join%20AgriInvest%20using%20my%20link:%20' . $referralUrl . '" 
              class="block w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
             ✉️ Share via SMS
           </a>
         </div>
       </div>';
-    }
-  } else {
-    echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
-  }
-  ?>
-</section>
+        }
+      } else {
+        echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
+      }
+      ?>
+    </section>
 
-<script>
-function copyToClipboard(btn) {
-  let link = btn.getAttribute("data-refer_link");
-  navigator.clipboard.writeText(link).then(() => {
-    let toast = document.createElement("div");
-    toast.innerText = "Referral link copied!";
-    toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2000);
-  });
-}
-</script>
+    <script>
+      function copyToClipboard(btn) {
+        let link = btn.getAttribute("data-refer_link");
+        navigator.clipboard.writeText(link).then(() => {
+          let toast = document.createElement("div");
+          toast.innerText = "Referral link copied!";
+          toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+        });
+      }
+    </script>
+
+
+    <script>
+      function copyToClipboard(btn) {
+        let link = btn.getAttribute("data-refer_link");
+        navigator.clipboard.writeText(link).then(() => {
+          let toast = document.createElement("div");
+          toast.innerText = "Referral link copied!";
+          toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+        });
+      }
+    </script>
+
+
+
+
 
   </main>
 
