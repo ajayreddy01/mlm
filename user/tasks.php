@@ -187,68 +187,94 @@ if (!isset($_SESSION['userid'])) {
     <div class="container-xxl flex-grow-1 container-p-y">
       <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Invite Task</h3>
 
-      <section class="p-4 sm:p-6 flex-1 flex flex-col items-center text-center">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 max-w-2xl w-full">
-          <h2 class="text-lg font-semibold text-green-700 dark:text-green-300">Earn Rewards!</h2>
-          <p class="text-gray-600 dark:text-gray-400 text-sm mt-2">
-            Invite valid members every day and you will be automatically rewarded.
-          </p>
+      <div class="container-xxl flex-grow-1 container-p-y">
+        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Invite Task</h3>
 
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <?php
+          // Fetch invite tasks (schemes) from API
+          $apiUrl = "http://agriinvestharvest.com/api/user/getallschemes";
+          $response = file_get_contents($apiUrl);
+          $schemes = json_decode($response, true);
+
+          // Get today's referrals for this user
+          $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
           $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
+
+          if ($schemes && is_array($schemes)) {
+            foreach ($schemes as $row) {
+              // Check task completion
+              if ($row['number_of_refers'] > $todayReferred) {
+                $button = '
+            <button 
+              data-refer_link="' . $referralUrl . '" 
+              onclick="copyToClipboard(this)" 
+              class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
+              Invite Now
+            </button>';
+              } else {
+                $button = '
+            <button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
+              Completed
+            </button>';
+              }
+
+              // Prize logic
+              if ((int) $row['scheme_name'] == 40) {
+                $prize = '<h4 class="text-red-500 font-bold">1GM GOLD COIN</h4>';
+              } elseif ((int) $row['scheme_name'] == 50) {
+                $prize = '<h4 class="text-red-500 font-bold">5G Smart Phone</h4>';
+              } else {
+                $prize = '<h4 class="text-red-500 font-bold">₹' . ((int) $row['scheme_name'] * 100) . '</h4>';
+              }
+
+              echo '
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
+          <div>
+            <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['scheme_name']) . '</span> valid members every day and earn 
+              <span class="font-bold text-green-600">₹' . ((int) $row['scheme_name'] * 100) . '</span>
+            </h6>
+
+            <div class="grid grid-cols-3 text-center text-sm gap-3">
+              <div>
+                <h4 class="text-blue-500 font-bold">₹100</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-xs">Per Reward</p>
+              </div>
+              <div>
+                <h4 class="text-indigo-600 font-bold">' . $todayReferred . ' / ' . htmlspecialchars($row['scheme_name']) . '</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-xs">Invited</p>
+              </div>
+              <div>
+                ' . $prize . '
+                <p class="text-gray-500 dark:text-gray-400 text-xs">Total Reward</p>
+              </div>
+            </div>
+          </div>
+          ' . $button . '
+        </div>';
+            }
+          } else {
+            echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
+          }
           ?>
+        </section>
+      </div>
 
-          <!-- Referral URL Box -->
-          <div
-            class="bg-gray-50 dark:bg-gray-700 border border-green-300 rounded-xl p-4 mt-6 flex items-center justify-between">
-            <span id="referralLink" class="font-bold text-green-700 dark:text-green-300 text-sm break-all">
-              <?php echo $referralUrl; ?>
-            </span>
-            <button onclick="copyReferral()"
-              class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
-              Copy
-            </button>
-          </div>
+      <script>
+        function copyToClipboard(btn) {
+          let link = btn.getAttribute("data-refer_link");
+          navigator.clipboard.writeText(link).then(() => {
+            // ✅ toast notification
+            let toast = document.createElement("div");
+            toast.innerText = "Referral link copied!";
+            toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-fade-in";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+          });
+        }
+      </script>
 
-          <!-- Reward Stats -->
-          <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
-              <p class="text-gray-500 dark:text-gray-300 text-sm">Total Refers</p>
-              <p class="text-xl font-bold text-green-700 dark:text-green-300">
-                <?php echo (int) $refer->getTotalReferrals($_SESSION['userid']); ?>
-              </p>
-            </div>
-            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
-              <p class="text-gray-500 dark:text-gray-300 text-sm">Active Refers</p>
-              <p class="text-xl font-bold text-green-700 dark:text-green-300">
-                <?php echo (int) $refer->getTodaysReferrals($_SESSION['userid']); ?>
-              </p>
-            </div>
-            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
-              <p class="text-gray-500 dark:text-gray-300 text-sm">Reward / Invite</p>
-              <p class="text-xl font-bold text-green-700 dark:text-green-300">₹100</p>
-            </div>
-            <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
-              <p class="text-gray-500 dark:text-gray-300 text-sm">Total Reward</p>
-              <p class="text-xl font-bold text-green-700 dark:text-green-300">
-                ₹<?php echo (int) $refer->getTotalReferrals($_SESSION['userid']) * 100; ?>
-              </p>
-            </div>
-          </div>
-
-          <!-- Share Options -->
-          <div class="mt-6 space-y-3">
-            <a href="https://wa.me/?text=Join%20Agri%20Invest%20using%20my%20link%20<?php echo urlencode($referralUrl); ?>"
-              target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
-              Share on WhatsApp
-            </a>
-            <a href="sms:?body=Join%20Agri%20Invest%20using%20my%20link%20<?php echo urlencode($referralUrl); ?>"
-              class="block w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">
-              Share via SMS
-            </a>
-          </div>
-        </div>
-      </section>
 
       <script>
         function copyReferral() {
