@@ -191,49 +191,39 @@ if (!isset($_SESSION['userid'])) {
 
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
-      // safer fetch
-      function fetchApi($url)
-      {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
-      }
-
-      $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes"; // use HTTPS
-      $response = fetchApi($apiUrl);
+      $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
+      $response = file_get_contents($apiUrl);
       $schemes = json_decode($response, true);
-
-      // debug (remove in prod)
-      echo "<pre>";
-      print_r($schemes);
-      echo "</pre>";
 
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
       if (!empty($schemes) && is_array($schemes)) {
         foreach ($schemes as $row) {
-          // logic same as before
-          $button = ($row['number_of_refers'] > $todayReferred)
-            ? '<button data-refer_link="' . $referralUrl . '" onclick="copyToClipboard(this)" class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">Invite Now</button>'
-            : '<button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">Completed</button>';
-
-          if ((int) $row['scheme_name'] == 40) {
-            $prize = '<h4 class="text-red-500 font-bold">1GM GOLD COIN</h4>';
-          } elseif ((int) $row['scheme_name'] == 50) {
-            $prize = '<h4 class="text-red-500 font-bold">5G Smart Phone</h4>';
+          // Button logic
+          if ($row['number_of_refers'] > $todayReferred) {
+            $button = '
+          <button data-refer_link="' . $referralUrl . '" 
+                  onclick="copyToClipboard(this)" 
+                  class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
+            Invite Now
+          </button>';
           } else {
-            $prize = '<h4 class="text-red-500 font-bold">₹' . ((int) $row['scheme_name'] * 100) . '</h4>';
+            $button = '
+          <button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
+            Completed
+          </button>';
           }
+
+          // Prize from API
+          $prize = '<h4 class="text-red-500 font-bold">₹' . htmlspecialchars($row['winning_prize']) . '</h4>';
 
           echo '
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
         <div>
           <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-            Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['scheme_name']) . '</span> valid members every day and earn 
-            <span class="font-bold text-green-600">₹' . ((int) $row['scheme_name'] * 100) . '</span>
+            Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['number_of_refers']) . '</span> valid members every day and earn 
+            <span class="font-bold text-green-600">₹' . htmlspecialchars($row['winning_prize']) . '</span>
           </h6>
 
           <div class="grid grid-cols-3 text-center text-sm gap-3">
@@ -242,7 +232,7 @@ if (!isset($_SESSION['userid'])) {
               <p class="text-gray-500 dark:text-gray-400 text-xs">Per Reward</p>
             </div>
             <div>
-              <h4 class="text-indigo-600 font-bold">' . $todayReferred . ' / ' . htmlspecialchars($row['scheme_name']) . '</h4>
+              <h4 class="text-indigo-600 font-bold">' . $todayReferred . ' / ' . htmlspecialchars($row['number_of_refers']) . '</h4>
               <p class="text-gray-500 dark:text-gray-400 text-xs">Invited</p>
             </div>
             <div>
@@ -260,28 +250,10 @@ if (!isset($_SESSION['userid'])) {
       ?>
     </section>
 
-
-
     <script>
       function copyToClipboard(btn) {
         let link = btn.getAttribute("data-refer_link");
         navigator.clipboard.writeText(link).then(() => {
-          // ✅ toast notification
-          let toast = document.createElement("div");
-          toast.innerText = "Referral link copied!";
-          toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-fade-in";
-          document.body.appendChild(toast);
-          setTimeout(() => toast.remove(), 2000);
-        });
-      }
-    </script>
-
-
-    <script>
-      function copyReferral() {
-        let link = document.getElementById("referralLink").innerText;
-        navigator.clipboard.writeText(link).then(() => {
-          // ✅ toast popup instead of alert
           let toast = document.createElement("div");
           toast.innerText = "Referral link copied!";
           toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
@@ -293,14 +265,6 @@ if (!isset($_SESSION['userid'])) {
 
 
 
-    <script>
-      function copyToClipboard(btn) {
-        let link = btn.getAttribute("data-refer_link");
-        navigator.clipboard.writeText(link).then(() => {
-          alert("Referral link copied: " + link);
-        });
-      }
-    </script>
 
   </main>
 
