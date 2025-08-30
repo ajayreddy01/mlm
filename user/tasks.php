@@ -192,7 +192,7 @@ if (!isset($_SESSION['userid'])) {
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
       // Fetch API
-       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
+       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']) ?? 0;
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
       function fetchApi($url)
       {
