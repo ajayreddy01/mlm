@@ -10,28 +10,13 @@ try {
     switch ($action) {
 
         //login
-        case 'login':
-            $email = checkinput($_POST['email']);
-            $pass = checkinput($_POST['password']);
-
-            $adminData = $admin->adminLogin($email, $pass);
-
-            if ($adminData) {
-                session_start();
-                $_SESSION['admin_id'] = $adminData['id'];
-                $_SESSION['admin_email'] = $adminData['email'];
-
-
-                
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => $result['error'], // <-- real error type
-                    'details' => $result['details'] ?? null
-                ]);
-            }
+        case 'login';
+            
+            $email  = checkinput($_POST['email']);
+            $pass  = checkinput($_POST['password']);
+            $admin->adminLogin($email, $pass);
+            //header("Location : ".BASE_URL."admin/dashboard.php");
             break;
-
         //dashboard data
         case 'getTotalSales':
             // Prepare the result array

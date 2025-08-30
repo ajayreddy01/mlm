@@ -34,42 +34,44 @@ class admin
      * @param string $password Admin's password
      * @return mixed Returns admin data on success, or false on failure
      */
-    function adminLogin($email, $password)
+        function adminLogin($email, $password)
     {
         try {
+            // Database connection (use your actual DB credentials)
+
+            // Prepare the query to fetch the admin record by email
             $sql = "SELECT * FROM admin WHERE email = :email";
             $stmt = $this->pdo->prepare($sql);
+
+            // Bind the email parameter
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+
+            // Execute the query
             $stmt->execute();
 
+            // Check if the email exists
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$admin) {
-                return [
-                    'success' => false,
-                    'error' => 'email_not_found',
-                    'details' => null
-                ];
+            if ($admin) {
+                // Verify the password (use password_verify if passwords are hashed)
+                if (password_verify($password, $admin['password'])) {
+                    session_start();
+
+                    // Set session variables
+                    $_SESSION['admin_id'] = $admin['id'];
+                    header("Location:" . BASE_URL . "./admin/dashboard.php");
+                } else {
+                    // Incorrect password
+                    return 'Invalid email or password.';
+                }
+            } else {
+                // No admin found with the provided email
+                return 'Invalid email or password.';
             }
-
-            if (password_verify($password, $admin['password'])) {
-                 session_start();
-                $_SESSION['admin_id'] = $admin['id'];
-                $_SESSION['admin_email'] = $admin['email'];
-               
-            }
-            
-
-            // Success
-            header("Location: " . BASE_URL . "admin/dashboard.php");
-            exit();
-
         } catch (PDOException $e) {
-            return [
-                'success' => false,
-                'error' => 'db_error',
-                'details' => $e->getMessage()
-            ];
+            // Handle any database connection errors
+            echo "Error: " . $e->getMessage();
+            return false;
         }
     }
 
