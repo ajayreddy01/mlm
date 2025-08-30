@@ -192,8 +192,6 @@ if (!isset($_SESSION['userid'])) {
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
       // Fetch API
-       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']) ?? 0;
-      $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
       function fetchApi($url)
       {
         $ch = curl_init($url);
@@ -217,23 +215,14 @@ if (!isset($_SESSION['userid'])) {
         foreach ($schemes as $row) {
           var_dump($row);
           // Completion logic
-          $isCompleted = $todayReferred >= (int) $row['number_of_refers'];
-          $progress = min(100, round(($todayReferred / (int) $row['number_of_refers']) * 100));
+         
 
-          // Buttons
-          if (!$isCompleted) {
-            $inviteBtn = '
-          <button data-refer_link="' . $referralUrl . '" 
-                  onclick="copyToClipboard(this)" 
-                  class="w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
-            📋 Copy Invite Link
-          </button>';
-          } else {
+        
             $inviteBtn = '
           <button class="w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
             ✅ Completed
           </button>';
-          }
+          
 
           echo '
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
@@ -246,9 +235,9 @@ if (!isset($_SESSION['userid'])) {
 
           <!-- Progress -->
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-3">
-            <div class="bg-green-500 h-2.5 rounded-full" style="width: ' . $progress . '%"></div>
+            
           </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">' . $todayReferred . ' / ' . htmlspecialchars($row['number_of_refers']) . ' invited</p>
+
         </div>
 
         <div class="space-y-2">
