@@ -3,7 +3,7 @@ include '../includes/init.php';
 
 if (!isset($_SESSION['userid'])) {
     // If not logged in, redirect to index.php
-    header("Location: login.php");
+    header("Location: index.php");
     exit(); // Stop further execution
 }
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
@@ -12,7 +12,7 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     session_destroy(); // Destroy the session
 
     // Redirect to the login page or any other page
-    header("Location: login.php"); // Replace 'index.php' with your desired redirect page
+    header("Location: index.php"); // Replace 'index.php' with your desired redirect page
     exit();
 }?><!DOCTYPE html>
 <html lang="en">

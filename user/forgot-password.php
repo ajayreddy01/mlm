@@ -1,9 +1,9 @@
 <?php
 include '../includes/init.php';
 
-if (!isset($_SESSION['userid'])) {
+if (isset($_SESSION['userid'])) {
     // If not logged in, redirect to index.php
-    header("Location: login.php");
+    header("Location: dashboard.php");
     exit(); // Stop further execution
 }
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
