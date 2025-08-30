@@ -205,13 +205,13 @@ if (!isset($_SESSION['userid'])) {
       $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
       $response = fetchApi($apiUrl);
       $schemes = json_decode($response, true);
-
+  var_dump($schemes);
       // User referral progress + referral link
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
       if (!empty($schemes) && is_array($schemes)) {
-        var_dump($schemes);
+      
         foreach ($schemes as $row) {
           // Completion logic
           $isCompleted = $todayReferred >= (int) $row['number_of_refers'];
