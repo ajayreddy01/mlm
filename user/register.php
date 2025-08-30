@@ -14,7 +14,9 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
   // Redirect to the login page or any other page
   header("Location: index.php"); // Replace 'index.php' with your desired redirect page
   exit();
-  if (isset($_POST['submit'])) {
+  
+}
+if (isset($_POST['submit'])) {
     $name = checkinput($_POST['name']);
     $mobile = checkinput($_POST['phone_number']);
     $email = checkinput($_POST['email']);
@@ -40,7 +42,6 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
 
     header("Location: " . BASE_URL . "user/index.php");
     exit();
-}
 }
 ?>
 
