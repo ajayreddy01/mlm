@@ -37,45 +37,27 @@ class admin
     function adminLogin($email, $password)
     {
         try {
-            // Database connection (use your actual DB credentials)
-
-            // Prepare the query to fetch the admin record by email
             $sql = "SELECT * FROM admin WHERE email = :email";
             $stmt = $this->pdo->prepare($sql);
-
-            // Bind the email parameter
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-
-            // Execute the query
             $stmt->execute();
 
-            // Check if the email exists
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($admin) {
-                // Verify the password (use password_verify if passwords are hashed)
-                if (password_verify($password, $admin['password'])) {
-                    session_start();
-
-                    // Set session variables
-                    $_SESSION['admin_id'] = $admin['id'];
-                    header("Location:" . BASE_URL . "./admin/dashboard.php");
-                } else {
-                    // Incorrect password
-                    return 'Invalid email or password.';
-                }
-            } else {
-                // No admin found with the provided email
-                return 'Invalid email or password.';
+            if ($admin && password_verify($password, $admin['password'])) {
+                return $admin; // ✅ return admin data, don't redirect
             }
+
+            return false; // invalid login
         } catch (PDOException $e) {
-            // Handle any database connection errors
-            echo "Error: " . $e->getMessage();
+            error_log("DB Error in adminLogin: " . $e->getMessage());
             return false;
         }
     }
 
-    public function selecallplans(){
+
+    public function selecallplans()
+    {
         $sql = "SELECT * FROM `plans` WHERE status = `active` ORDER BY price ASC";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -554,7 +536,7 @@ class admin
                 $stmt->execute([
                     ':transaction_id' => $transaction_id,
                     ':userid' => $userId,
-                    ':amount' => $data['amount']*0.1
+                    ':amount' => $data['amount'] * 0.1
                 ]);
 
                 if ($status && $status['status'] == 0) {
@@ -575,7 +557,7 @@ class admin
 
             // Commit the transaction
             $this->pdo->commit();
-            $msg =  ['message' => 'Status updated successfully.', 'status' => $status, 'ID' => $id, 'Data' => $data];
+            $msg = ['message' => 'Status updated successfully.', 'status' => $status, 'ID' => $id, 'Data' => $data];
             return $msg;
         } catch (PDOException $e) {
             // Rollback the transaction in case of an error
@@ -628,7 +610,7 @@ class admin
 
             // Commit the transaction
             $this->pdo->commit();
-            $msg =  ['message' => 'Status updated successfully.', 'status' => $status, 'ID' => $id, 'Data' => $data];
+            $msg = ['message' => 'Status updated successfully.', 'status' => $status, 'ID' => $id, 'Data' => $data];
             return $msg;
         } catch (PDOException $e) {
             // Rollback the transaction in case of an error
@@ -642,14 +624,14 @@ class admin
         if (is_string($file)) {
             return $file;
         } else {
-            $filename   = time() . $file['name'];
-            $fileTmp    = $file['tmp_name'];
-            $fileSize   = $file['size'];
-            $errors     = $file['error'];
+            $filename = time() . $file['name'];
+            $fileTmp = $file['tmp_name'];
+            $fileSize = $file['size'];
+            $errors = $file['error'];
             $ext = explode('.', $filename);
             $ext = strtolower(end($ext));
 
-            $allowed_extensions  = array('jpg', 'png', 'jpeg', 'webp');
+            $allowed_extensions = array('jpg', 'png', 'jpeg', 'webp');
             if (!file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/')) {
                 mkdir($_SERVER['DOCUMENT_ROOT'] . '/uploads/');
             }

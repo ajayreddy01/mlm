@@ -10,12 +10,27 @@ try {
     switch ($action) {
 
         //login
-        case 'login';
-            
-            $email  = checkinput($_POST['email']);
-            $pass  = checkinput($_POST['password']);
-            $admin->adminLogin($email, $pass);
-            header("Location : ".BASE_URL."admin/dashboard.php");
+        case 'login':
+            $email = checkinput($_POST['email']);
+            $pass = checkinput($_POST['password']);
+
+            $adminData = $admin->adminLogin($email, $pass);
+
+            if ($adminData) {
+                session_start();
+                $_SESSION['admin_id'] = $adminData['id'];
+                $_SESSION['admin_email'] = $adminData['email'];
+
+                echo json_encode([
+                    'success' => true,
+                    'redirect' => BASE_URL . 'admin/dashboard.php'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid email or password'
+                ]);
+            }
             break;
 
         //dashboard data
@@ -94,38 +109,38 @@ try {
         //plans insert and update
         case 'insertDataPlans':
             $data = [
-                'product_name'	=>$_POST['name'],	
-                'price'=>$_POST['price'],
-                'daily_income'	=>$_POST['daily_income'],	
-                'days'	=>$_POST['days'],
-                'bonus'		=>$_POST['bonus'],
-                'total_revenue'		=>$_POST['revnue'],
-                'invitation_commission'	=>$_POST['invitation_commission'],
-                'rate_of_return'		=>$_POST['ror'],
-                'purchase_limit'	=>$_POST['limit'],
-                'level'		=>$_POST['plantype'],
-                'rules'	=>$_POST['desc'],
-                
+                'product_name' => $_POST['name'],
+                'price' => $_POST['price'],
+                'daily_income' => $_POST['daily_income'],
+                'days' => $_POST['days'],
+                'bonus' => $_POST['bonus'],
+                'total_revenue' => $_POST['revnue'],
+                'invitation_commission' => $_POST['invitation_commission'],
+                'rate_of_return' => $_POST['ror'],
+                'purchase_limit' => $_POST['limit'],
+                'level' => $_POST['plantype'],
+                'rules' => $_POST['desc'],
+
             ];
             echo json_encode($admin->insertData('plans', $data));
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         case 'updateDataPlans':
             $data = [
-                'product_name'	=>$_POST['name'],	
-                'price'=>$_POST['price'],
-                'daily_income'	=>$_POST['daily_income'],	
-                'days'	=>$_POST['days'],
-                'bonus'		=>$_POST['editbonus'],
-                'total_revenue'		=>$_POST['revenue'],
-                'invitation_commission'	=>$_POST['invitation_commission'],
-                'rate_of_return'		=>$_POST['rate_of_return'],
-                'purchase_limit'	=>$_POST['limit'],
-                'level'		=>$_POST['plantype'],
-                'rules'	=>$_POST['desc'],
-                
+                'product_name' => $_POST['name'],
+                'price' => $_POST['price'],
+                'daily_income' => $_POST['daily_income'],
+                'days' => $_POST['days'],
+                'bonus' => $_POST['editbonus'],
+                'total_revenue' => $_POST['revenue'],
+                'invitation_commission' => $_POST['invitation_commission'],
+                'rate_of_return' => $_POST['rate_of_return'],
+                'purchase_limit' => $_POST['limit'],
+                'level' => $_POST['plantype'],
+                'rules' => $_POST['desc'],
+
             ];
-            echo json_encode( $admin->updateData('plans', $data, $_POST['planId']));
+            echo json_encode($admin->updateData('plans', $data, $_POST['planId']));
             break;
         case 'updatePlanStatus':
             $id = $_POST['id'];
@@ -134,28 +149,28 @@ try {
             echo json_encode($admin->updateData('plans', $data, $id));
             //header("Location: " . $_SERVER['HTTP_REFERER']);
             break;
-        
+
         // insert and update lottery types 
         case 'insertDataLottery':
             $data = [
-                'name'	=>$_POST['name'],	
-                'ticket'=>$_POST['price'],
-                'winning'	=>$_POST['prize'],
-                'type'		=>$_POST['plantype'],
-                'description'		=>$_POST['desc'],
+                'name' => $_POST['name'],
+                'ticket' => $_POST['price'],
+                'winning' => $_POST['prize'],
+                'type' => $_POST['plantype'],
+                'description' => $_POST['desc'],
             ];
             echo json_encode($admin->insertData('lottery_types', $data));
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         case 'updateDataLottery':
             $data = [
-                'name'	=>$_POST['editname'],	
-                'ticket'=>$_POST['editprice'],
-                'winning'	=>$_POST['editprize'],
-                'type'		=>$_POST['editplantype'],
-                'description'		=>$_POST['editdesc'],
+                'name' => $_POST['editname'],
+                'ticket' => $_POST['editprice'],
+                'winning' => $_POST['editprize'],
+                'type' => $_POST['editplantype'],
+                'description' => $_POST['editdesc'],
             ];
-            echo json_encode( $admin->updateData('lottery_types', $data, $_POST['editid']));
+            echo json_encode($admin->updateData('lottery_types', $data, $_POST['editid']));
             break;
         case 'updateStatusLottery':
             $id = $_POST['id'];
@@ -176,11 +191,11 @@ try {
             $imageurl = $admin->uploadimage($image);
             $data = [
                 'name' => $name,
-                'nickname'    => $nickname,
-                'acc_limit'    => $limit,
-                'image'    => $imageurl,
-                'upi_id'    => $upiid,
-                'status'    => 'active',
+                'nickname' => $nickname,
+                'acc_limit' => $limit,
+                'image' => $imageurl,
+                'upi_id' => $upiid,
+                'status' => 'active',
                 'used_limit' => 0,
                 'limit_per_transaction' => $limitpertransaction,
             ];
@@ -195,20 +210,20 @@ try {
             $upiid = checkinput($_POST['upi_id']);
             $limit = checkinput($_POST['acc_limit']);
             $limitpertransaction = checkinput($_POST['limit_per_transaction']);
-            if(!empty($_FILES['image']['name'])){
+            if (!empty($_FILES['image']['name'])) {
                 $image = $_FILES['image'];
                 $imageurl = $admin->uploadimage($image);
-            }else{
+            } else {
                 $imageurl = $_POST['image_url'];
             }
-            
+
             $data = [
                 'name' => $name,
-                'nickname'    => $nickname,
-                'acc_limit'    => $limit,
-                'image'    => $imageurl,
-                'upi_id'    => $upiid,
-                'status'    => 'active',
+                'nickname' => $nickname,
+                'acc_limit' => $limit,
+                'image' => $imageurl,
+                'upi_id' => $upiid,
+                'status' => 'active',
                 'limit_per_transaction' => $limitpertransaction,
             ];
             echo json_encode($admin->updateData('banks', $data, $id));
@@ -223,7 +238,7 @@ try {
             echo json_encode($admin->updateData('banks', $data, $id));
             //header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
-        
+
         // insert and update Schemes
         case 'insertDataSchemes':
             $scheme_name = checkinput($_POST['scheme_name']);
@@ -233,11 +248,11 @@ try {
             $description = checkinput($_POST['description']);
             $data = [
                 'scheme_name' => $scheme_name,
-                'number_of_refers'    => $number_of_refers,
-                'winning_prize'    => $winning_prize,
-                'scheme_type'    => $scheme_type,
-                'description'    => $description,
-                'status'    => 'Active',
+                'number_of_refers' => $number_of_refers,
+                'winning_prize' => $winning_prize,
+                'scheme_type' => $scheme_type,
+                'description' => $description,
+                'status' => 'Active',
             ];
             echo json_encode($admin->insertData('schemes', $data));
             header("Location: " . $_SERVER['HTTP_REFERER']);
@@ -247,18 +262,18 @@ try {
             $id = $_POST['editid'];
             $scheme_name = checkinput($_POST['editscheme_name']);
             $number_of_refers = checkinput($_POST['editnumber_of_refers']);
-            
+
             $scheme_type = checkinput($_POST['editscheme_type']);
             $description = checkinput($_POST['editdescription']);
             $winning_prize = $_POST['editwinning_prize'];
-            
-            
+
+
             $data = [
                 'scheme_name' => $scheme_name,
-                'number_of_refers'    => $number_of_refers,
-                'winning_prize'    => $winning_prize,
-                'scheme_type'    => $scheme_type,
-                'description'    => $description,
+                'number_of_refers' => $number_of_refers,
+                'winning_prize' => $winning_prize,
+                'scheme_type' => $scheme_type,
+                'description' => $description,
             ];
             echo json_encode($admin->updateData('schemes', $data, $id));
             header("Location: " . $_SERVER['HTTP_REFERER']);
@@ -272,7 +287,7 @@ try {
             echo json_encode($admin->updateData('schemes', $data, $id));
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
-        
+
         case 'getallplans':
             echo json_encode($admin->selectData('plans'));
             break;
@@ -302,10 +317,10 @@ try {
 
         case 'verifydeposit':
             $data = $_POST['data']; // Expecting a JSON string with the data
-            
+
             $status = $_POST['status'];
             $userId = $data['userid'];
-            echo json_encode($admin->verifyDeposit($data['transaction_id'],$data, $status, $userId));
+            echo json_encode($admin->verifyDeposit($data['transaction_id'], $data, $status, $userId));
             //header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
 
@@ -315,19 +330,19 @@ try {
             $status = $_POST['status'];
             $data = $_POST['data'];
             echo json_encode($admin->verifyWithdraw($id, $data, $status, $data['user_id']));
-           // header("Location: " . $_SERVER['HTTP_REFERER']);
+            // header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         case 'all':
             $corn->send_daily_referbonus();
             $corn->send_plan_bonus();
             //$corn->lottery_winner_daily();
-           // $corn->lottery_winner_weekly();
-           exit;
+            // $corn->lottery_winner_weekly();
+            exit;
         case 'lottery':
-           
+
             $corn->lottery_winner_daily();
-           // $corn->lottery_winner_weekly();
-           exit;
+            // $corn->lottery_winner_weekly();
+            exit;
         default:
             echo json_encode(['error' => 'Invalid action error']);
             break;

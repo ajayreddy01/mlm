@@ -1,5 +1,5 @@
 <?php
-<?php
+
 include '../includes/init.php';
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
