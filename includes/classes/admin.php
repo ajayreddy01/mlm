@@ -50,8 +50,7 @@ class admin
 
             return false; // invalid login
         } catch (PDOException $e) {
-            error_log("DB Error in adminLogin: " . $e->getMessage());
-            return false;
+            return ['success' => false, 'error' => 'db_error', 'details' => $e->getMessage()];
         }
     }
 

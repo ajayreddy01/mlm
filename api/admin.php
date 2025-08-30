@@ -28,7 +28,8 @@ try {
             } else {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Invalid email or password'
+                    'message' => $result['error'], // <-- real error type
+                    'details' => $result['details'] ?? null
                 ]);
             }
             break;
