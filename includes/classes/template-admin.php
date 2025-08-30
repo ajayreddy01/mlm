@@ -31,7 +31,35 @@ class admin_template
               </div>
               <!-- /Search -->
 
-             
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- Language -->
+                <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <i class="bx bx-globe bx-md"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
+                        <span>English</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
+                        <span>French</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
+                        <span>Arabic</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
+                        <span>German</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
                 <!-- /Language -->
 
                 <!-- Quick links  -->
@@ -481,7 +509,7 @@ class admin_template
                                         document.write(new Date().getFullYear());
                                     </script>
                                     , made with ❤️ by
-                                    <a href="' . BASE_URL . '" target="_blank" class="footer-link">Agri Invest</a>
+                                    <a href="' . BASE_URL . '" target="_blank" class="footer-link">VKTSR</a>
                                 </div>
                                 
                             </div>
@@ -578,7 +606,7 @@ class admin_template
               <span class="app-brand-logo demo">
                
               </span>
-              <span class="app-brand-text demo menu-text fw-bold ms-2">Agri Invest</span>
+              <span class="app-brand-text demo menu-text fw-bold ms-2">VKTSR</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
