@@ -1,20 +1,23 @@
 <?php
 include '../includes/init.php';
-
-if (!isset($_SESSION['userid'])) {
-    // If not logged in, redirect to index.php
-    header("Location: index.php");
-    exit(); // Stop further execution
-}
+// Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-    // Destroy the session
-    session_unset(); // Unset all session variables
-    session_destroy(); // Destroy the session
+    // Destroy session
+    $_SESSION = [];
+    session_destroy();
 
-    // Redirect to the login page or any other page
-    header("Location: index.php"); // Replace 'index.php' with your desired redirect page
+    // Redirect to login
+    header("Location: index.php");
     exit();
-}?>
+}
+
+// If already logged in, redirect to dashboard
+if (!isset($_SESSION['userid'])) {
+    header("Location: index.php");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en" > <!-- Add 'dark' here if you want default dark -->
 <head>

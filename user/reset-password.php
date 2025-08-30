@@ -1,3 +1,23 @@
+<?php
+include '../includes/init.php';
+// Logout logic
+if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
+    // Destroy session
+    $_SESSION = [];
+    session_destroy();
+
+    // Redirect to login
+    header("Location: index.php");
+    exit();
+}
+
+// If already logged in, redirect to dashboard
+if (!isset($_SESSION['userid'])) {
+    header("Location: index.php");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en" class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 <head>
