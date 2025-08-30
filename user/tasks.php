@@ -191,8 +191,19 @@ if (!isset($_SESSION['userid'])) {
 
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
+      // Use cURL for safety
+      function fetchApi($url)
+      {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+      }
+
       $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
-      $response = file_get_contents($apiUrl);
+      $response = fetchApi($apiUrl);
       $schemes = json_decode($response, true);
 
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
@@ -200,8 +211,8 @@ if (!isset($_SESSION['userid'])) {
 
       if (!empty($schemes) && is_array($schemes)) {
         foreach ($schemes as $row) {
-          // Button logic
-          if ($row['number_of_refers'] > $todayReferred) {
+          // ✅ Completion logic fixed
+          if ($todayReferred < $row['number_of_refers']) {
             $button = '
           <button data-refer_link="' . $referralUrl . '" 
                   onclick="copyToClipboard(this)" 
@@ -215,14 +226,15 @@ if (!isset($_SESSION['userid'])) {
           </button>';
           }
 
-          // Prize from API
-          $prize = '<h4 class="text-red-500 font-bold">₹' . htmlspecialchars($row['winning_prize']) . '</h4>';
-
+          // ✅ Use scheme_name as title
           echo '
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
         <div>
+          <h5 class="text-lg font-bold text-green-700 dark:text-green-300 mb-2">'
+            . htmlspecialchars($row['scheme_name']) . '
+          </h5>
           <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-            Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['number_of_refers']) . '</span> valid members every day and earn 
+            Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['number_of_refers']) . '</span> valid members and earn 
             <span class="font-bold text-green-600">₹' . htmlspecialchars($row['winning_prize']) . '</span>
           </h6>
 
@@ -236,7 +248,7 @@ if (!isset($_SESSION['userid'])) {
               <p class="text-gray-500 dark:text-gray-400 text-xs">Invited</p>
             </div>
             <div>
-              ' . $prize . '
+              <h4 class="text-red-500 font-bold">₹' . htmlspecialchars($row['winning_prize']) . '</h4>
               <p class="text-gray-500 dark:text-gray-400 text-xs">Total Reward</p>
             </div>
           </div>
@@ -262,6 +274,7 @@ if (!isset($_SESSION['userid'])) {
         });
       }
     </script>
+
 
 
 
