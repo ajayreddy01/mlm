@@ -191,74 +191,95 @@ if (!isset($_SESSION['userid'])) {
 
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
-      // Use cURL for safety
+      // Fetch API
       function fetchApi($url)
       {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
+        $res = curl_exec($ch);
         curl_close($ch);
-        return $response;
+        return $res;
       }
 
       $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
       $response = fetchApi($apiUrl);
       $schemes = json_decode($response, true);
 
+      // User referral progress + referral link
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
-     
+      if (!empty($schemes) && is_array($schemes)) {
         foreach ($schemes as $row) {
-          // ✅ Completion logic fixed
-          if ($todayReferred < $row['number_of_refers']) {
-            $button = '
+          // Completion logic
+          $isCompleted = $todayReferred >= (int) $row['number_of_refers'];
+          $progress = min(100, round(($todayReferred / (int) $row['number_of_refers']) * 100));
+
+          // Buttons
+          if (!$isCompleted) {
+            $inviteBtn = '
           <button data-refer_link="' . $referralUrl . '" 
                   onclick="copyToClipboard(this)" 
-                  class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
-            Invite Now
+                  class="w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
+            📋 Copy Invite Link
           </button>';
           } else {
-            $button = '
-          <button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
-            Completed
+            $inviteBtn = '
+          <button class="w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
+            ✅ Completed
           </button>';
           }
 
-          // ✅ Use scheme_name as title
           echo '
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
         <div>
-          <h5 class="text-lg font-bold text-green-700 dark:text-green-300 mb-2">'
-            . htmlspecialchars($row['scheme_name']) . '
-          </h5>
-          <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-            Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['number_of_refers']) . '</span> valid members and earn 
+          <h5 class="text-lg font-bold text-green-700 dark:text-green-300 mb-2">' . htmlspecialchars($row['scheme_name']) . '</h5>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Invite <span class="font-bold">' . htmlspecialchars($row['number_of_refers']) . '</span> members and earn 
             <span class="font-bold text-green-600">₹' . htmlspecialchars($row['winning_prize']) . '</span>
-          </h6>
+          </p>
 
-          <div class="grid grid-cols-3 text-center text-sm gap-3">
-            <div>
-              <h4 class="text-blue-500 font-bold">₹100</h4>
-              <p class="text-gray-500 dark:text-gray-400 text-xs">Per Reward</p>
-            </div>
-            <div>
-              <h4 class="text-indigo-600 font-bold">' . $todayReferred . ' / ' . htmlspecialchars($row['number_of_refers']) . '</h4>
-              <p class="text-gray-500 dark:text-gray-400 text-xs">Invited</p>
-            </div>
-            <div>
-              <h4 class="text-red-500 font-bold">₹' . htmlspecialchars($row['winning_prize']) . '</h4>
-              <p class="text-gray-500 dark:text-gray-400 text-xs">Total Reward</p>
-            </div>
+          <!-- Progress -->
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-3">
+            <div class="bg-green-500 h-2.5 rounded-full" style="width: ' . $progress . '%"></div>
           </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">' . $todayReferred . ' / ' . htmlspecialchars($row['number_of_refers']) . ' invited</p>
         </div>
-        ' . $button . '
+
+        <div class="space-y-2">
+          ' . $inviteBtn . '
+          <a href="https://wa.me/?text=Join%20AgriInvest%20using%20my%20link:%20' . urlencode($referralUrl) . '" 
+             target="_blank"
+             class="block w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition">
+            💬 Share on WhatsApp
+          </a>
+          <a href="sms:?body=Join%20AgriInvest%20using%20my%20link:%20' . $referralUrl . '" 
+             class="block w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
+            ✉️ Share via SMS
+          </a>
+        </div>
       </div>';
         }
-      
+      } else {
+        echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
+      }
       ?>
     </section>
+
+    <script>
+      function copyToClipboard(btn) {
+        let link = btn.getAttribute("data-refer_link");
+        navigator.clipboard.writeText(link).then(() => {
+          let toast = document.createElement("div");
+          toast.innerText = "Referral link copied!";
+          toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+        });
+      }
+    </script>
+
 
     <script>
       function copyToClipboard(btn) {
