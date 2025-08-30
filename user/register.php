@@ -1,49 +1,59 @@
 <?php
-
 include '../includes/init.php';
-if (isset($_SESSION['userid'])) {
-  // If not logged in, redirect to index.php
-  header("Location: dashboard.php");
-  exit(); // Stop further execution
-}
+session_start(); // ✅ Always start session at the top
+
+// Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-  // Destroy the session
-  session_unset(); // Unset all session variables
-  session_destroy(); // Destroy the session
+    // Destroy session
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    session_destroy();
 
-  // Redirect to the login page or any other page
-  header("Location: index.php"); // Replace 'index.php' with your desired redirect page
-  exit();
-  
+    // Redirect to login
+    header("Location: index.php");
+    exit();
 }
+
+// If already logged in, redirect to dashboard
+if (isset($_SESSION['userid'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
+// Registration handling
 if (isset($_POST['submit'])) {
-    $name = checkinput($_POST['name']);
-    $mobile = checkinput($_POST['phone_number']);
-    $email = checkinput($_POST['email']);
-    $password = checkinput($_POST['password']);
-    $invite_code = checkinput($_POST['invite_code']);
-    if (!empty($invite_code)) {
+    $name       = checkinput($_POST['name']);
+    $mobile     = checkinput($_POST['phone_number']);
+    $email      = checkinput($_POST['email']);
+    $password   = checkinput($_POST['password']);
+    $confirmPwd = checkinput($_POST['confirmPassword']);
+    $inviteCode = checkinput($_GET['invite_code'] ?? '');
 
-        if ($user->check_invite_code($invite_code) == true) {
-
-            $user->userSignup($name, $mobile, $password, $invite_code);
-            echo 'error';
-        } else {
-
-            $user->userSignup($name, $mobile, $password, null);
-            echo 'error2';
-        }
-    } else {
-
-        $user->userSignup($name, $mobile, $password, null);
-        echo 'error3';
+    // Extra check on server side
+    if ($password !== $confirmPwd) {
+        $_SESSION['error'] = "Passwords do not match";
+        header("Location: index.php");
+        exit();
     }
 
+    if (!empty($inviteCode) && $user->check_invite_code($inviteCode) === true) {
+        $user->userSignup($name, $mobile, $password, $inviteCode,$email);
+    } else {
+        $user->userSignup($name, $mobile, $password, null,$email);
+    }
 
+    // After signup, redirect to login
     header("Location: " . BASE_URL . "user/index.php");
     exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en" class="light">
@@ -112,7 +122,7 @@ if (isset($_POST['submit'])) {
 
       <!-- Confirm Password -->
       <div class="relative">
-        <input type="password" id="confirmPassword" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="password" id="confirmPassword" name="confirmPassword" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
         <label for="confirmPassword" class="absolute left-3 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-green-600">Confirm Password</label>
       </div>
 
