@@ -509,7 +509,7 @@ class admin_template
                                         document.write(new Date().getFullYear());
                                     </script>
                                     , made with ❤️ by
-                                    <a href="' . BASE_URL . '" target="_blank" class="footer-link">VKTSR</a>
+                                    <a href="' . BASE_URL . '" target="_blank" class="footer-link">Agri Invest</a>
                                 </div>
                                 
                             </div>
@@ -606,7 +606,7 @@ class admin_template
               <span class="app-brand-logo demo">
                
               </span>
-              <span class="app-brand-text demo menu-text fw-bold ms-2">VKTSR</span>
+              <span class="app-brand-text demo menu-text fw-bold ms-2">Agri Invest</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
