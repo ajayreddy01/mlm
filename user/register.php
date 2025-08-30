@@ -161,18 +161,6 @@ if (isset($_POST['submit'])) {
       toast.classList.remove('hidden');
       setTimeout(() => toast.classList.add('hidden'), 3000);
     }
-
-    const registerForm = document.getElementById('registerForm');
-    registerForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const pass = document.getElementById('password').value;
-      const confirm = document.getElementById('confirmPassword').value;
-      if (pass !== confirm) {
-        showToast("❌ Passwords do not match", "error");
-        return;
-      }
-      showToast("✅ Registration successful", "success");
-    });
   </script>
 </body>
 </html>
