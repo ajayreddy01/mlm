@@ -21,8 +21,8 @@ try {
                 $_SESSION['admin_id'] = $adminData['id'];
                 $_SESSION['admin_email'] = $adminData['email'];
 
-                header("Location: " . BASE_URL . "admin/dashboard.php");
-                exit();
+
+                
             } else {
                 echo json_encode([
                     'success' => false,

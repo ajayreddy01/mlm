@@ -61,10 +61,8 @@ class admin
             }
 
             // Success
-            return [
-                'success' => true,
-                'data' => $admin
-            ];
+            header("Location: " . BASE_URL . "admin/dashboard.php");
+            exit();
 
         } catch (PDOException $e) {
             return [
