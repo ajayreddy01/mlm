@@ -17,6 +17,7 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
   if (isset($_POST['submit'])) {
     $name = checkinput($_POST['name']);
     $mobile = checkinput($_POST['phone_number']);
+    $email = checkinput($_POST['email']);
     $password = checkinput($_POST['password']);
     $invite_code = checkinput($_POST['invite_code']);
     if (!empty($invite_code)) {
@@ -85,25 +86,25 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     <form id="registerForm" class="space-y-5" action="" method="post">
       <!-- Name -->
       <div class="relative">
-        <input type="text" id="name" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="text" id="name" name="name" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
         <label for="name" class="absolute left-3 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-green-600">Full Name</label>
       </div>
 
       <!-- Mobile -->
       <div class="relative">
-        <input type="text" id="mobile" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="text" id="phone_number" name="phone_number" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
         <label for="mobile" class="absolute left-3 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-green-600">Mobile Number</label>
       </div>
 
       <!-- Email -->
       <div class="relative">
-        <input type="email" id="email" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="email" id="email" name="email" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
         <label for="email" class="absolute left-3 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-green-600">Email</label>
       </div>
 
       <!-- Password -->
       <div class="relative">
-        <input type="password" id="password" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="password" name="password" id="password" required class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-transparent placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
         <label for="password" class="absolute left-3 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-green-600">Password</label>
         <button type="button" id="togglePassword" class="absolute right-3 top-3 text-gray-500 dark:text-gray-400">👁</button>
       </div>
@@ -115,7 +116,7 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
       </div>
 
       <!-- Submit -->
-      <button type="submit" id="registerBtn" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2">
+      <button type="submit" id="submit" name="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2">
         <span id="registerText">Register</span>
         <svg id="loadingIcon" class="animate-spin hidden h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
       </button>

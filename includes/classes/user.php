@@ -30,11 +30,11 @@ class user extends admin
 
 
 
-    function userSignup($name, $mobile, $password, $referralCode = null)
+    function userSignup($name, $mobile, $password, $referralCode = null,$email)
     {
         try {
             // Validate inputs
-            if (empty($name) || empty($mobile) || empty($password)) {
+            if (empty($name) || empty($mobile) || empty($password) || empty($email)) {
                 throw new Exception('All fields are required.');
             }
 
@@ -47,8 +47,8 @@ class user extends admin
 
             // Insert user
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $query = "INSERT INTO users (userid, name, phone_number, password, referral_code, referred_by) 
-                  VALUES (:userid, :name, :phone, :password, :referral_code, :referred_by)";
+            $query = "INSERT INTO users (userid, name, phone_number, password, referral_code, referred_by,email) 
+                  VALUES (:userid, :name, :phone, :password, :referral_code, :referred_by,:email)";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute([
                 ':userid' => $userId,
@@ -56,7 +56,8 @@ class user extends admin
                 ':phone' => $mobile,
                 ':password' => $hashedPassword,
                 ':referral_code' => $new_referral_code,
-                ':referred_by' => $referralCode
+                ':referred_by' => $referralCode,
+                ':email' => $email
             ]);
 
             // Create wallet
