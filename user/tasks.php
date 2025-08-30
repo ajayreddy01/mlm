@@ -16,7 +16,7 @@ if (!isset($_SESSION['userid'])) {
   header("Location: index.php");
   exit();
 }
-
+$userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 ?>
 <!DOCTYPE html>
 <html lang="en"> <!-- Add 'dark' here if you want default dark -->
