@@ -44,15 +44,37 @@ class admin
 
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($admin && password_verify($password, $admin['password'])) {
-                return $admin; // ✅ return admin data, don't redirect
+            if (!$admin) {
+                return [
+                    'success' => false,
+                    'error' => 'email_not_found',
+                    'details' => null
+                ];
             }
 
-            return false; // invalid login
+            if (!password_verify($password, $admin['password'])) {
+                return [
+                    'success' => false,
+                    'error' => 'wrong_password',
+                    'details' => null
+                ];
+            }
+
+            // Success
+            return [
+                'success' => true,
+                'data' => $admin
+            ];
+
         } catch (PDOException $e) {
-            return ['success' => false, 'error' => 'db_error', 'details' => $e->getMessage()];
+            return [
+                'success' => false,
+                'error' => 'db_error',
+                'details' => $e->getMessage()
+            ];
         }
     }
+
 
 
     public function selecallplans()
