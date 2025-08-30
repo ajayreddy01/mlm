@@ -61,7 +61,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                 <div class="card px-sm-6 px-0">
                     <div class="card-body">
                         
-                        <h4 class="mb-1">Welcome to VKTSR! </h4>
+                        <h4 class="mb-1">Welcome to Agri Invest! </h4>
                         <p class="mb-6">Please sign-in to your account and start the adventure</p>
 
                         <form id="formAuthentication" class="mb-6" action="<?php echo BASE_URL;?>api/admin/login" method="POST">
