@@ -1,0 +1,60 @@
+<IfModule mod_expires.c>
+    # Turn on Expires and set default expiry times
+    ExpiresActive On
+
+    # Default expiry: 1 month for most static files
+    ExpiresDefault "access plus 1 month"
+
+    # Specific expiry for file types
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/x-javascript "access plus 1 month"
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType text/plain "access plus 0 seconds"
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType audio/mpeg "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Cache-Control headers for older browsers
+    <FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|woff|woff2|ttf|otf|eot|svg|pdf|mp4|webp)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+</IfModule>
+
+# Enable compression for static assets
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/x-javascript text/xml application/xml application/xhtml+xml application/rss+xml application/atom_xml text/plain text/x-component application/json
+    AddOutputFilterByType DEFLATE image/svg+xml image/x-icon application/x-font-ttf application/x-font-opentype application/vnd.ms-fontobject font/woff font/woff2
+</IfModule>
+
+
+RewriteEngine On
+RewriteBase /
+
+# Rewrite clean URLs like /api/admin/xyz to /api/admin.php?action=xyz
+RewriteRule ^api/admin/([a-zA-Z0-9_-]+)$ api/admin.php?action=$1 [L,QSA]
+
+# Prevent direct access to api/admin.php with the 'action' parameter
+RewriteCond %{REQUEST_URI} ^/api/admin\.php$ [NC]
+RewriteCond %{QUERY_STRING} ^action= [NC]
+RewriteRule ^ - [F]
+
+# Rewrite clean URLs like /api/user/xyz to /api/user.php?action=xyz
+RewriteRule ^api/user/([a-zA-Z0-9_-]+)$ api/user.php?action=$1 [L,QSA]
+
+# Prevent direct access to api/user.php with the 'action' parameter
+RewriteCond %{REQUEST_URI} ^/api/user\.php$ [NC]
+RewriteCond %{QUERY_STRING} ^action= [NC]
+RewriteRule ^ - [F]
