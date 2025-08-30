@@ -211,6 +211,7 @@ if (!isset($_SESSION['userid'])) {
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
       if (!empty($schemes) && is_array($schemes)) {
+        var_dump($schemes);
         foreach ($schemes as $row) {
           // Completion logic
           $isCompleted = $todayReferred >= (int) $row['number_of_refers'];
