@@ -209,7 +209,7 @@ if (!isset($_SESSION['userid'])) {
       // User referral progress + referral link
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
-
+      var_dump(value: $schemes);
       if (!empty($schemes)) {
        var_dump(value: $schemes);
         foreach ($schemes as $row) {
