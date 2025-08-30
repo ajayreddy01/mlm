@@ -191,34 +191,35 @@ if (!isset($_SESSION['userid'])) {
 
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
-      // Fetch invite tasks (schemes) from API
-      $apiUrl = "http://agriinvestharvest.com/api/user/getallschemes";
-      $response = file_get_contents($apiUrl);
+      // safer fetch
+      function fetchApi($url)
+      {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+      }
+
+      $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes"; // use HTTPS
+      $response = fetchApi($apiUrl);
       $schemes = json_decode($response, true);
 
-      // Get today's referrals for this user
+      // debug (remove in prod)
+      echo "<pre>";
+      print_r($schemes);
+      echo "</pre>";
+
       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
       $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
 
-      if ($schemes && is_array($schemes)) {
+      if (!empty($schemes) && is_array($schemes)) {
         foreach ($schemes as $row) {
-          // Check task completion
-          if ($row['number_of_refers'] > $todayReferred) {
-            $button = '
-            <button 
-              data-refer_link="' . $referralUrl . '" 
-              onclick="copyToClipboard(this)" 
-              class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">
-              Invite Now
-            </button>';
-          } else {
-            $button = '
-            <button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">
-              Completed
-            </button>';
-          }
+          // logic same as before
+          $button = ($row['number_of_refers'] > $todayReferred)
+            ? '<button data-refer_link="' . $referralUrl . '" onclick="copyToClipboard(this)" class="mt-4 w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition">Invite Now</button>'
+            : '<button class="mt-4 w-full bg-gray-400 text-white py-2 rounded-xl cursor-not-allowed">Completed</button>';
 
-          // Prize logic
           if ((int) $row['scheme_name'] == 40) {
             $prize = '<h4 class="text-red-500 font-bold">1GM GOLD COIN</h4>';
           } elseif ((int) $row['scheme_name'] == 50) {
@@ -228,36 +229,37 @@ if (!isset($_SESSION['userid'])) {
           }
 
           echo '
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
-          <div>
-            <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-              Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['scheme_name']) . '</span> valid members every day and earn 
-              <span class="font-bold text-green-600">₹' . ((int) $row['scheme_name'] * 100) . '</span>
-            </h6>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
+        <div>
+          <h6 class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            Invite <span class="font-bold text-gray-800 dark:text-white">' . htmlspecialchars($row['scheme_name']) . '</span> valid members every day and earn 
+            <span class="font-bold text-green-600">₹' . ((int) $row['scheme_name'] * 100) . '</span>
+          </h6>
 
-            <div class="grid grid-cols-3 text-center text-sm gap-3">
-              <div>
-                <h4 class="text-blue-500 font-bold">₹100</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-xs">Per Reward</p>
-              </div>
-              <div>
-                <h4 class="text-indigo-600 font-bold">' . $todayReferred . ' / ' . htmlspecialchars($row['scheme_name']) . '</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-xs">Invited</p>
-              </div>
-              <div>
-                ' . $prize . '
-                <p class="text-gray-500 dark:text-gray-400 text-xs">Total Reward</p>
-              </div>
+          <div class="grid grid-cols-3 text-center text-sm gap-3">
+            <div>
+              <h4 class="text-blue-500 font-bold">₹100</h4>
+              <p class="text-gray-500 dark:text-gray-400 text-xs">Per Reward</p>
+            </div>
+            <div>
+              <h4 class="text-indigo-600 font-bold">' . $todayReferred . ' / ' . htmlspecialchars($row['scheme_name']) . '</h4>
+              <p class="text-gray-500 dark:text-gray-400 text-xs">Invited</p>
+            </div>
+            <div>
+              ' . $prize . '
+              <p class="text-gray-500 dark:text-gray-400 text-xs">Total Reward</p>
             </div>
           </div>
-          ' . $button . '
-        </div>';
+        </div>
+        ' . $button . '
+      </div>';
         }
       } else {
         echo '<p class="col-span-3 text-center text-gray-500 dark:text-gray-400">No invite tasks available right now.</p>';
       }
       ?>
     </section>
+
 
 
     <script>
