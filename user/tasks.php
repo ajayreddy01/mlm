@@ -192,6 +192,8 @@ if (!isset($_SESSION['userid'])) {
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
       // Fetch API
+       $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
+      $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
       function fetchApi($url)
       {
         $ch = curl_init($url);
@@ -202,13 +204,13 @@ if (!isset($_SESSION['userid'])) {
         return $res;
       }
 
+
       $apiUrl = "https://agriinvestharvest.com/api/user/getallschemes";
       $response = fetchApi($apiUrl);
       $schemes = json_decode($response, true);
       var_dump(value: $schemes);
       // User referral progress + referral link
-      $todayReferred = $refer->getTodaysReferrals($_SESSION['userid']);
-      $referralUrl = "https://agriinvestharvest.com/user/signup.php?invite_code=" . urlencode($userdata[0]['referral_code']);
+     
       var_dump(value: $schemes);
       if (!empty($schemes)) {
        var_dump(value: $schemes);
