@@ -1,22 +1,26 @@
 <?php
 include '../includes/init.php';
-// Logout logic
-if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-    // Destroy session
-    $_SESSION = [];
-    session_destroy();
-
-    // Redirect to login
-    header("Location: index.php");
-    exit();
-}
-
 // If already logged in, redirect to dashboard
 if (isset($_SESSION['userid'])) {
     header("Location: dashboard.php");
     exit();
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  // Collect form data
+  $phone_number = checkinput($_POST['mobile']);
+  $password = checkinput($_POST['password']);
 
+  if (!empty($phone_number) && !empty($password)) {
+    // Example: Log the collected data (you can process it as needed)
+    $user->userLogin($phone_number, $password);
+
+    // Example: Redirect to another page or process login
+    // header('Location: dashboard.php');
+    // exit();
+  } else {
+    echo "Please fill in all the required fields.";
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light">
@@ -56,10 +60,10 @@ if (isset($_SESSION['userid'])) {
     </div>
 
     <!-- Form -->
-    <form id="loginForm" class="space-y-5">
+    <form id="loginForm" class="space-y-5" action="" method="post">
       <!-- Mobile -->
       <div class="relative">
-        <input type="text" id="mobile" required
+        <input type="text" id="mobile" name="mobile" required
           class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600
                  text-gray-900 dark:text-white bg-transparent
                  placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
@@ -72,7 +76,7 @@ if (isset($_SESSION['userid'])) {
 
       <!-- Password -->
       <div class="relative">
-        <input type="password" id="password" required
+        <input type="password" id="password" name="password" required
           class="peer w-full px-3 pt-5 pb-2 rounded-lg border border-gray-300 dark:border-gray-600
                  text-gray-900 dark:text-white bg-transparent
                  placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400">
@@ -81,7 +85,7 @@ if (isset($_SESSION['userid'])) {
                peer-focus:top-2 peer-focus:text-sm peer-focus:text-green-600">
           Password
         </label>
-        <button type="button" id="togglePassword" class="absolute right-3 top-3 text-gray-500 dark:text-gray-400">👁</button>
+        <button type="submit" id="submit" name="submit" class="absolute right-3 top-3 text-gray-500 dark:text-gray-400">👁</button>
       </div>
 
       <!-- Remember Me -->
