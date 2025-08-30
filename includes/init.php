@@ -39,7 +39,7 @@ $bank = new bank($pdo);
 $wallet = new Wallet($pdo);
 $refer = new refer($pdo);
 $corn = new cornjobs($pdo);
-define('BASE_URL', 'http://localhost/vktsr-main/');
+define('BASE_URL', 'https://agriinvestharvest.com/');
 
 ?>                                                   
 
