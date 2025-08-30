@@ -300,57 +300,64 @@ if (!isset($_SESSION['userid'])) {
 
       <!-- Plan History -->
       <section>
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Plan History</h2>
-        </div>
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Plan History</h2>
+  </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow overflow-x-auto">
-          <table class="w-full text-sm text-left">
-            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-              <tr>
-                <th class="p-3">ID</th>
-                <th class="p-3">Plan Name</th>
-                <th class="p-3 text-right">Amount</th>
-                <th class="p-3">Date</th>
-                <th class="p-3">End Date</th>
-                <th class="p-3">Status</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td class="p-3">#101</td>
-                <td class="p-3">Starter Plan</td>
-                <td class="p-3 text-right text-green-600 font-medium">₹500</td>
-                <td class="p-3">2025-07-01</td>
-                <td class="p-3">2025-07-31</td>
-                <td class="p-3"><span
-                    class="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 px-2 py-1 rounded-lg text-xs">Active</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td class="p-3">#102</td>
-                <td class="p-3">Pro Plan</td>
-                <td class="p-3 text-right text-green-600 font-medium">₹1500</td>
-                <td class="p-3">2025-06-01</td>
-                <td class="p-3">2025-07-31</td>
-                <td class="p-3"><span
-                    class="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300 px-2 py-1 rounded-lg text-xs">Expired</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td class="p-3">#103</td>
-                <td class="p-3">Premium Plan</td>
-                <td class="p-3 text-right text-green-600 font-medium">₹3000</td>
-                <td class="p-3">2025-05-01</td>
-                <td class="p-3">2025-07-31</td>
-                <td class="p-3"><span
-                    class="bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 px-2 py-1 rounded-lg text-xs">Cancelled</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+        <tr>
+          <th class="p-3">ID</th>
+          <th class="p-3">Plan Name</th>
+          <th class="p-3 text-right">Amount</th>
+          <th class="p-3">Date</th>
+          <th class="p-3">End Date</th>
+          <th class="p-3">Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <?php 
+        $data = $user->getplandata($_SESSION['userid']);
+        if ($data && count($data) > 0) {
+          foreach ($data as $row) {
+            // Status color mapping
+            $statusClass = '';
+            switch (strtolower($row['status'])) {
+              case 'active':
+                $statusClass = 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300';
+                break;
+              case 'completed':
+                $statusClass = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300';
+                break;
+              case 'cancelled':
+                $statusClass = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300';
+                break;
+              default:
+                $statusClass = 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-300';
+            }
+
+            echo '
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <td class="p-3">#'.$row['id'].'</td>
+              <td class="p-3">'.htmlspecialchars($row['product_name']).'</td>
+              <td class="p-3 text-right text-green-600 font-medium">₹'.htmlspecialchars($row['price']).'</td>
+              <td class="p-3">'.htmlspecialchars($row['purchase_date']).'</td>
+              <td class="p-3">'.htmlspecialchars($row['expiry_date']).'</td>
+              <td class="p-3">
+                <span class="'.$statusClass.' px-2 py-1 rounded-lg text-xs">'.ucfirst($row['status']).'</span>
+              </td>
+            </tr>';
+          }
+        } else {
+          echo '<tr><td colspan="6" class="p-3 text-center text-gray-500 dark:text-gray-400">No plan history found.</td></tr>';
+        }
+        ?>
+      </tbody>
+    </table>
+  </div>
+</section>
+
     </div>
 
   </main>
