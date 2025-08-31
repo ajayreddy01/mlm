@@ -20,7 +20,7 @@ $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
-$bankdata = $bank->selectbank($amount);
+$bankdata = $bank->selectbank($_GET['amount']);
 
 
 // Handle form submission
