@@ -16,6 +16,7 @@ if (!isset($_SESSION['userid'])) {
     header("Location: index.php");
     exit();
 }
+$accountdata = $user->getaccounts($_SESSION['userid']);
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 
@@ -216,20 +217,13 @@ if (isset($_POST['bank'])) {
       <div class="space-y-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex justify-between items-center">
           <div>
-            <p class="font-bold text-green-700 dark:text-green-400">SBI Bank</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">Account No: **** 5678</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">IFSC: SBIN0001234</p>
+            <p class="font-bold text-green-700 dark:text-green-400"><?php echo $accountdata->bank_name;?></p>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">Account No: <?php echo $accountdata->bank_account_number;?></p>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">IFSC: <?php echo $accountdata->ifsc_code;?></p>
           </div>
           <button class="text-red-500 hover:text-red-700">Remove</button>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p class="font-bold text-green-700 dark:text-green-400">HDFC Bank</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">Account No: **** 4321</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">IFSC: HDFC0005678</p>
-          </div>
-          <button class="text-red-500 hover:text-red-700">Remove</button>
-        </div>
+        
       </div>
     </section>
   </main>

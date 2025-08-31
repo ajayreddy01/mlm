@@ -356,6 +356,24 @@ class user extends admin
         return $referrals;
     }
 
+    public function getaccounts($id)
+    {
+        $sql = "SELECT * FROM accounts WHERE user_id = :id";
 
-    // Example usage
+        // Prepare the statement
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        // Execute the statement
+        $stmt->execute();
+
+        // Fetch the result
+        $account = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $account ? $account : null; // Return account details or null if not found
+
+
+        // Example usage
+    }
 }
+?>
