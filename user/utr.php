@@ -23,27 +23,34 @@ $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $bankdata = $bank->selectbank($_GET['amount']);
 
 
-// Handle form submission
+
 if (isset($_POST['submit'])) {
-  $utrNumber = $_POST['utr'] ?? '';
+    $utrNumber = trim($_POST['utr'] ?? '');
 
+    // Validate UTR and file upload
+    if (!empty($utrNumber) && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        // Upload image using your custom function
+        $uploadFile = $admin->uploadImage($_FILES['image']);
 
-  // Check and handle file upload
-  if (!empty($utrNumber) && isset($_FILES['image'])) {
-    $uploadFile = $admin->uploadImage($_FILES['image']);
-    $data = [
-      'bank_id' => $bankdata['id'],
-      'bank_name' => $bankdata['name'],
-      'utr_number' => $utrNumber,
-      'image' => $uploadFile
-    ];
-    $wallet->deposit($_SESSION['userid'], $amount, $data);
-    header('Location: https://agriinvestharvest.com/user/');
-    exit;
-  } else {
-    echo "Please provide both UTR Number and an image.";
-  }
+        $data = [
+            'bank_id'    => $bankdata['id'],
+            'bank_name'  => $bankdata['name'],
+            'utr_number' => $utrNumber,
+            'image'      => $uploadFile
+        ];
+
+        // Deposit function
+        $wallet->deposit($_SESSION['userid'], $amount, $data);
+
+        // Redirect on success
+        header('Location: https://agriinvestharvest.com/user/');
+        exit;
+    } else {
+        echo "<p style='color:red'>Please provide both UTR Number and an image.</p>";
+    }
 }
+?>
+
 ?><!DOCTYPE html>
 <html lang="en" class="light">
 
