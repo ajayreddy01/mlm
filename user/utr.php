@@ -44,8 +44,8 @@ if (isset($_POST['submit'])) {
     ];
     
     $wallet->deposit($_SESSION['userid'], $amount, $data);
-    header('Location: https://agriinvestharvest.com/user/dashbaord.php');
-    exit;
+    //header('Location: https://agriinvestharvest.com/user/dashbaord.php');
+    //exit;
   } else {
     echo "Please provide both UTR Number and an image.";
   }
