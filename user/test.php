@@ -45,7 +45,8 @@ if (!isset($_SESSION['userid'])) {
       🌗 Toggle Theme
     </button>
   </div>
-
+  <?php
+  var_dump($admin->getalldeposits());?>
   <script>
     function toggleTheme() {
       document.documentElement.classList.toggle("dark");
