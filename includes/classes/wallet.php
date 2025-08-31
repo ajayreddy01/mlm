@@ -38,7 +38,7 @@ class Wallet extends admin
                 'bank_id' =>(int) $data['bank_id'],
                 'utr_number' => $data['utr_number'],
                 'bank_name' =>  $data['bank_name'],
-                'amount' => $amount,
+                'amount' => (int) $amount,
                 'transaction_id' => $transaction_id,
                 'image' => $data['image'],
                 'status' => 'pending'
