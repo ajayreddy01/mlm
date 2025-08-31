@@ -143,7 +143,7 @@ $(function () {
     console.log("Row Data:", rowData);
   
     $.ajax({
-      url: "https://vktsr.vip/api/admin/verifywithdraw",
+      url: "https://agriinvestharvest.com/api/admin/verifywithdraw",
       method: "POST",
       data: {
         transaction_id: transactionId,
@@ -255,7 +255,7 @@ $(function () {
     console.log("Row Data:", rowData);
   
     $.ajax({
-      url: "https://vktsr.vip/api/admin/verifywithdraw",
+      url: "https://agriinvestharvest.com/api/admin/verifywithdraw",
       method: "POST",
       data: {
         transaction_id: transactionId,
