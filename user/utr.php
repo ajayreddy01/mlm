@@ -22,7 +22,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $bankdata = $bank->selectbank($_GET['amount']);
 
-
+$amount = $_GET['amount'] ?? 0;
 
 if (isset($_POST['submit'])) {
   $utrNumber = trim($_POST['utr'] ?? '');
