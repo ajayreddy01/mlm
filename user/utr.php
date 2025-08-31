@@ -34,21 +34,25 @@ if (isset($_POST['submit'])) {
 
 
   // Check and handle file upload
-  if (!empty($utrNumber) && isset($_FILES['image'])) {
+  if (!empty($utrNumber) && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK && !empty($_FILES['image']['name'])) {
     $uploadFile = $admin->uploadImage($_FILES['image']);
+
     $data = [
       'bank_id' => $bankdata['id'],
       'bank_name' => $bankdata['name'],
       'utr_number' => $utrNumber,
       'image' => $uploadFile
     ];
-    
+
     $wallet->deposit($_SESSION['userid'], $amount, $data);
-    //header('Location: https://agriinvestharvest.com/user/dashbaord.php');
-    //exit;
+
+    // Success redirect or message
+    //header('Location: deposit.php?success=1');
+    exit;
   } else {
-    echo "Please provide both UTR Number and an image.";
+    echo "<p style='color:red'>Please provide both UTR Number and an image.</p>";
   }
+
 }
 ?><!DOCTYPE html>
 <html lang="en" class="light">
