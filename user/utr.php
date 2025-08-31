@@ -31,8 +31,7 @@ $bankdata = $bank->selectbank($amount);
 // Handle form submission
 if (isset($_POST['submit'])) {
   $utrNumber = $_POST['utr'] ?? '';
-  var_dump($_FILES['image']);
-  var_dump($utrNumber);
+
 
   // Check and handle file upload
   if (!empty($utrNumber) && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK && !empty($_FILES['image']['name'])) {
@@ -245,7 +244,7 @@ if (isset($_POST['submit'])) {
           </div>
 
           <!-- Payment Form -->
-          <form class="space-y-4" method="post" enctype="multipart/form-data">
+          <form class="space-y-4" action="" method="post" enctype="multipart/form-data">
             <input type="text" placeholder="Enter UTR Number" name="utr" id="utr" required class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 
                  focus:outline-none focus:ring-2 focus:ring-green-400">
 
