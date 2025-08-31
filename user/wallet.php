@@ -191,19 +191,19 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
         <!-- Card -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
           <h2 class="text-sm text-gray-500 dark:text-gray-400">Balance</h2>
-          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ 0.00</p>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹<?php echo $walletdata->deposit+$walletdata->withdraw+$walletdata->bonus;?></p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
           <h2 class="text-sm text-gray-500 dark:text-gray-400">Deposit Balance</h2>
-          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ 0.00</p>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ <?php echo $walletdata->deposit;?></p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
           <h2 class="text-sm text-gray-500 dark:text-gray-400">Withdraw Balance</h2>
-          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ 0.00</p>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ <?php echo $walletdata->withdraw;?></p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
           <h2 class="text-sm text-gray-500 dark:text-gray-400">Bonus Balance</h2>
-          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ 0.00</p>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ <?php echo $walletdata->bonus;?></p>
         </div>
       </section>
 

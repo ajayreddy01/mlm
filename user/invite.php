@@ -2,25 +2,26 @@
 include '../includes/init.php';
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-    // Destroy session
-    $_SESSION = [];
-    session_destroy();
+  // Destroy session
+  $_SESSION = [];
+  session_destroy();
 
-    // Redirect to login
-    header("Location: index.php");
-    exit();
+  // Redirect to login
+  header("Location: index.php");
+  exit();
 }
 
 // If already logged in, redirect to dashboard
 if (!isset($_SESSION['userid'])) {
-    header("Location: index.php");
-    exit();
+  header("Location: index.php");
+  exit();
 }
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +55,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       document.getElementById("mobileSidebar").classList.toggle("hidden");
     }
 
-    window.addEventListener("click", function(e) {
+    window.addEventListener("click", function (e) {
       const profileMenu = document.getElementById("profileMenu");
       const notifMenu = document.getElementById("notifMenu");
       const profileBtn = document.getElementById("profileBtn");
@@ -74,9 +75,11 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
     });
   </script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex">
   <!-- Sidebar (Desktop - Fixed) -->
-  <aside class="hidden md:flex md:flex-col fixed top-0 left-0 w-64 h-screen bg-green-700 dark:bg-green-900 text-white p-6 space-y-6">
+  <aside
+    class="hidden md:flex md:flex-col fixed top-0 left-0 w-64 h-screen bg-green-700 dark:bg-green-900 text-white p-6 space-y-6">
     <div class="flex items-center gap-3">
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
@@ -99,7 +102,8 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
   </aside>
 
   <!-- Mobile Sidebar (Overlay) -->
-  <div id="mobileSidebar" class="hidden fixed top-0 left-0 w-64 h-full bg-green-700 dark:bg-green-900 text-white p-6 space-y-6 z-50 md:hidden">
+  <div id="mobileSidebar"
+    class="hidden fixed top-0 left-0 w-64 h-full bg-green-700 dark:bg-green-900 text-white p-6 space-y-6 z-50 md:hidden">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
@@ -135,20 +139,25 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       </div>
       <div class="flex items-center gap-4">
         <button onclick="toggleTheme()" class="bg-gray-200 dark:bg-yellow-400 px-3 py-1 rounded-lg">🌗</button>
-        
+
         <!-- Notifications -->
         <div class="relative">
           <button id="notifBtn" onclick="toggleNotifMenu()" class="relative cursor-pointer">
             🔔
             <span class="absolute -top-1 -right-1 bg-red-500 text-xs text-white px-1 rounded-full">3</span>
           </button>
-          <div id="notifMenu" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
+          <div id="notifMenu"
+            class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
             <div class="p-3 border-b dark:border-gray-700 font-semibold">Notifications</div>
             <div class="max-h-60 overflow-y-auto">
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500 in Wallet</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat field" is pending</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124 starts today</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank account details</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500
+                in Wallet</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat
+                field" is pending</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124
+                starts today</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank
+                account details</a>
             </div>
             <div class="p-2 text-center border-t dark:border-gray-700">
               <a href="notifications.php" class="text-green-600 dark:text-green-400 text-sm font-medium">View All</a>
@@ -158,14 +167,16 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
 
         <!-- Profile -->
         <div class="relative">
-          <img id="profileBtn" onclick="toggleProfileMenu()" 
-               src="images/profile.jpg" 
-               class="w-10 h-10 rounded-full border shadow cursor-pointer">
-          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
+          <img id="profileBtn" onclick="toggleProfileMenu()" src="images/profile.jpg"
+            class="w-10 h-10 rounded-full border shadow cursor-pointer">
+          <div id="profileMenu"
+            class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
             <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a>
-            <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp Group</a>
+            <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp
+              Group</a>
             <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️ Settings</a>
-            <a href="dashboard.php?logout=true" class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
+            <a href="dashboard.php?logout=true"
+              class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
           </div>
         </div>
       </div>
@@ -180,20 +191,24 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
         </p>
 
         <!-- Referral Code Box -->
-        <div class="bg-gray-50 dark:bg-gray-700 border border-green-300 rounded-xl p-4 mt-6 flex items-center justify-between">
+        <div
+          class="bg-gray-50 dark:bg-gray-700 border border-green-300 rounded-xl p-4 mt-6 flex items-center justify-between">
           <span id="referralCode" class="font-bold text-green-700 dark:text-green-300">6855083b</span>
-          <button onclick="copyReferral()" class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">Copy</button>
+          <button onclick="copyReferral()"
+            class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">Copy</button>
         </div>
 
         <!-- Reward Stats -->
         <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
             <p class="text-gray-500 dark:text-gray-300 text-sm">Total Refers</p>
-            <p class="text-xl font-bold text-green-700 dark:text-green-300">0</p>
+            <p class="text-xl font-bold text-green-700 dark:text-green-300">
+              <?php echo $userdata[0]['referral_count_inactive'] + $userdata[0]['referral_count']; ?></p>
           </div>
           <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
             <p class="text-gray-500 dark:text-gray-300 text-sm">Active Refers</p>
-            <p class="text-xl font-bold text-green-700 dark:text-green-300">0</p>
+            <p class="text-xl font-bold text-green-700 dark:text-green-300"><?php echo $userdata[0]['referral_count']; ?>
+            </p>
           </div>
           <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
             <p class="text-gray-500 dark:text-gray-300 text-sm">Reward / Invite</p>
@@ -201,14 +216,18 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
           </div>
           <div class="bg-green-50 dark:bg-gray-700 border border-green-200 rounded-xl p-4">
             <p class="text-gray-500 dark:text-gray-300 text-sm">Total Reward</p>
-            <p class="text-xl font-bold text-green-700 dark:text-green-300">₹0</p>
+            <p class="text-xl font-bold text-green-700 dark:text-green-300">
+              ₹<?php echo $userdata[0]['referral_count'] * 100; ?></p>
           </div>
         </div>
 
         <!-- Share Options -->
         <div class="mt-6 space-y-3">
-          <a href="https://wa.me/?text=Join%20Agri Invest%20using%20my%20code%206855083b" target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Share on WhatsApp</a>
-          <a href="sms:?body=Join%20Agri Invest%20using%20my%20code%206855083b" class="block w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Share via SMS</a>
+          <a href="https://wa.me/?text=Join%20Agri Invest%20using%20my%20code%20 https://agriinvestharvest.com/user/register.php?invite_code=<?php echo $userdata[0]['referral_code']; ?>"
+            target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Share on
+            WhatsApp</a>
+          <a href="sms:?body=Join%20Agri Invest%20using%20my%20code% https://agriinvestharvest.com/user/register.php?invite_code=<?php echo $userdata[0]['referral_code']; ?>"
+            class="block w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Share via SMS</a>
         </div>
       </div>
     </section>
@@ -229,22 +248,40 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
             </tr>
           </thead>
           <tbody>
-            <tr class="text-center">
-              <td class="border p-2">-</td>
-              <td class="border p-2">-</td>
-              <td class="border p-2">-</td>
-              <td class="border p-2">-</td>
-              <td class="border p-2">-</td>
-              <td class="border p-2">-</td>
-            </tr>
+            <?php
+            $data = $user->getDirectReferrals($_SESSION['userid']);
+            if (!empty($data)) {
+              foreach ($data as $row) {
+                $statusLabel = $row['status'] == 0 ? 'Inactive' : 'Active';
+                $statusClass = $row['status'] == 0
+                  ? 'text-red-600 dark:text-red-400'
+                  : 'text-green-600 dark:text-green-400';
+
+                echo '<tr class="text-center">';
+                echo '<td class="border p-2">' . htmlspecialchars($row['userid']) . '</td>';
+                echo '<td class="border p-2">' . htmlspecialchars($row['name']) . '</td>';
+                echo '<td class="border p-2">' . htmlspecialchars($row['phone_number']) . '</td>';
+                echo '<td class="border p-2">' . htmlspecialchars($row['created_at']) . '</td>';
+                echo '<td class="border p-2">' . htmlspecialchars($row['referral_type']) . '</td>';
+                echo '<td class="border p-2 ' . $statusClass . '">' . $statusLabel . '</td>';
+                echo '</tr>';
+              }
+            } else {
+              echo '<tr class="text-center">
+                    <td class="border p-2" colspan="6">No referrals found</td>
+                  </tr>';
+            }
+            ?>
           </tbody>
         </table>
       </div>
     </section>
+
   </main>
 
   <!-- Bottom Navigation (Mobile only) -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-green-700 dark:bg-green-900 text-white flex justify-around py-3 md:hidden">
+  <nav
+    class="fixed bottom-0 left-0 right-0 bg-green-700 dark:bg-green-900 text-white flex justify-around py-3 md:hidden">
     <a href="dashboard.php">🏠</a>
     <a href="wallet.php">💰</a>
     <a href="plans.php">📋</a>
@@ -252,4 +289,5 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
     <a href="profile.php">👤</a>
   </nav>
 </body>
+
 </html>

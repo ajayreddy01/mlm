@@ -176,16 +176,13 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow">
         <h2 class="text-gray-600 dark:text-gray-400">Wallet Balance</h2>
-        <p class="text-2xl font-bold text-green-700 dark:text-green-400">₹ 12,500</p>
+        <p class="text-2xl font-bold text-green-700 dark:text-green-400"><?php echo $walletdata->deposit+$walletdata->withdraw+$walletdata->bonus;?></p>
       </div>
       <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow">
         <h2 class="text-gray-600 dark:text-gray-400">Active Plans</h2>
-        <p class="text-2xl font-bold text-green-700 dark:text-green-400">3</p>
+        <p class="text-2xl font-bold text-green-700 dark:text-green-400"><?php echo $user->getActivePlanCount($_SESSION['userid'])?></p>
       </div>
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow">
-        <h2 class="text-gray-600 dark:text-gray-400">Pending Tasks</h2>
-        <p class="text-2xl font-bold text-green-700 dark:text-green-400">2</p>
-      </div>
+      
     </div>
 
     <!-- Lucky Draw Banner -->

@@ -258,6 +258,31 @@ class user extends admin
         return $results;
     }
 
+    public function getActivePlanCount($userid)
+{
+    $sql = "
+        SELECT COUNT(*) as active_plan_count
+        FROM purchases p
+        JOIN plans pr ON p.plan_id = pr.id 
+        WHERE p.user_id = :userid 
+          AND p.status = 'active'
+          AND NOW() BETWEEN p.purchase_date AND p.expiry_date;
+    ";
+
+    // Prepare the statement
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Fetch single row
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result['active_plan_count'];
+}
+
+
     public function getlotterydata($userid)
     {
         $sql = "
