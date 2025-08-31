@@ -35,7 +35,7 @@ class Wallet extends admin
             ]);
             $datadeposit = [
                 'userid' => $userid,
-                'bank_id' => $data['bank_id'],
+                'bank_id' =>(int) $data['bank_id'],
                 'utr_number' => $data['utr_number'],
                 'bank_name' =>  $data['bank_name'],
                 'amount' => $amount,
