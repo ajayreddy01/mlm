@@ -31,7 +31,8 @@ $bankdata = $bank->selectbank($amount);
 // Handle form submission
 if (isset($_POST['submit'])) {
   $utrNumber = $_POST['utr'] ?? '';
-
+  var_dump($_FILES['image']);
+  var_dump($utrNumber);
 
   // Check and handle file upload
   if (!empty($utrNumber) && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK && !empty($_FILES['image']['name'])) {
