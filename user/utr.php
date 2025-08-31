@@ -39,6 +39,8 @@ if (isset($_POST['submit'])) {
       'image' => $uploadFile
     ];
 
+    var_dump($_SESSION['userid']);
+
     // Deposit function
     $result = $wallet->deposit($_SESSION['userid'], $amount, $data);
     var_dump($result);
