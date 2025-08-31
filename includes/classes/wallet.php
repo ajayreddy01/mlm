@@ -35,17 +35,18 @@ class Wallet extends admin
             ]);
             $datadeposit = [
                 'userid' => $userid,
-                'bank_id' =>(int) $data['bank_id'],
+                'bank_id' => (int) $data['bank_id'],
                 'utr_number' => $data['utr_number'],
-                'bank_name' =>  $data['bank_name'],
+                'bank_name' => $data['bank_name'],
                 'amount' => (int) $amount,
                 'transaction_id' => $transaction_id,
                 'image' => $data['image'],
                 'status' => 'pending'
             ];
             var_dump($datadeposit);
-            $data = $this->insertData('deposits', $datadeposit);
-            var_dump($this->pdo->errorInfo());
+            $insertId = $this->insertData('deposits', $datadeposit);
+            var_dump($insertId);
+
 
             // Commit transaction
             $this->pdo->commit();
@@ -136,7 +137,8 @@ class Wallet extends admin
             ]);
 
             // Insert transaction record for bonus
-            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);;
+            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
+            ;
             $stmt = $this->pdo->prepare("
                 INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
                 VALUES (:transaction_id, :userid, 'bonus', :amount, 'bonus', 'success')
@@ -177,7 +179,8 @@ class Wallet extends admin
             ]);
 
             // Insert transaction record for bonus
-            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);;
+            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
+            ;
             $stmt = $this->pdo->prepare("
                 INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
                 VALUES (:transaction_id, :userid, 'bonus', :amount, 'withdraw', 'success')
@@ -221,12 +224,14 @@ class Wallet extends admin
             INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
             VALUES (:transaction_id, :userid, :type, :amount, 'withdraw', 'success')
         ");
-            if (!$stmt1->execute([
-                ':transaction_id' => $transaction_id,
-                ':userid' => $userid,
-                ':type' => $type,
-                ':amount' => $amount
-            ])) {
+            if (
+                !$stmt1->execute([
+                    ':transaction_id' => $transaction_id,
+                    ':userid' => $userid,
+                    ':type' => $type,
+                    ':amount' => $amount
+                ])
+            ) {
                 throw new Exception("Failed to insert transaction for userid: $userid");
             }
 
@@ -266,7 +271,8 @@ class Wallet extends admin
             ]);
 
             // Insert transaction record for bonus reduction
-            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);;
+            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
+            ;
             $stmt = $this->pdo->prepare("
                 INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
                 VALUES (:transaction_id, :userid, 'bonus', :amount, 'bonus', 'success')
@@ -410,7 +416,7 @@ class Wallet extends admin
         // Fetch and display results
         $result2 = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return [$result1['userid'],$result2['userid']];
+        return [$result1['userid'], $result2['userid']];
     }
     function hasActivePurchase($user_id)
     {
@@ -526,16 +532,16 @@ class Wallet extends admin
                 'daily_earnings' => $dailyearning,
                 'status' => 'active'
             ];
-            $data =  $this->insertData('purchases', $dataplans);
+            $data = $this->insertData('purchases', $dataplans);
 
 
             $team = $this->referby($userid);
-            if($team[0] != null){
+            if ($team[0] != null) {
                 if ($this->hasActivePurchase($team[0]) === true) {
                     $this->addwithdrawfunc($team[0], $commoision, 'commission');
                 }
             }
-            if($team[1] != null){
+            if ($team[1] != null) {
                 if ($this->hasActivePurchase($team[1]) === true) {
                     $this->addwithdrawfunc($team[1], $commoision / 2, 'commission');
                 }
@@ -631,7 +637,7 @@ class Wallet extends admin
         $this->insertData('transactions', $datatransactions);
 
 
-        $ticket  = $this->generateString('user_id', 'lottery_id');
+        $ticket = $this->generateString('user_id', 'lottery_id');
         $lottery_data = [
             'user_id' => $userid,                // User ID participating in the lottery
             'lottery_id' => $lottery_id,         // Lottery ID

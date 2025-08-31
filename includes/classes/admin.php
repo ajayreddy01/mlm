@@ -34,7 +34,7 @@ class admin
      * @param string $password Admin's password
      * @return mixed Returns admin data on success, or false on failure
      */
-        function adminLogin($email, $password)
+    function adminLogin($email, $password)
     {
         try {
             // Database connection (use your actual DB credentials)
@@ -257,23 +257,27 @@ class admin
      * @param array $data Associative array of column names and values
      * @return bool Returns true on success, false on failure
      */
-    function insertData($table, $data)
+    public function insertData($table, $data)
     {
-        // Prepare the keys and values for the insert statement
-        $columns = implode(", ", array_keys($data));
-        $placeholders = implode(", ", array_fill(0, count($data), "?"));
-        $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
+        $columns = array_keys($data);
+        $placeholders = array_map(fn($col) => ":$col", $columns);
 
-        try {
+        $sql = "INSERT INTO `$table` (`" . implode("`,`", $columns) . "`) 
+            VALUES (" . implode(",", $placeholders) . ")";
 
-            $stmt = $this->pdo->prepare($sql);
-            // Execute with the data array
-            $stmt->execute(array_values($data));
-            return true;
-        } catch (PDOException $e) {
-            return $e;
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($data as $key => $value) {
+            $stmt->bindValue(":$key", $value);
+        }
+
+        if ($stmt->execute()) {
+            return $this->pdo->lastInsertId(); // return new id
+        } else {
+            return false;
         }
     }
+
     function updateReferralTracking($user_id)
     {
 
