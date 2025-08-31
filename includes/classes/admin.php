@@ -511,7 +511,7 @@ class admin
      * @param int $userId The ID of the user associated with the transaction.
      * @return bool Returns true if the operation was successful, false otherwise.
      */
-    function verifyDeposit($id, $data, $status, $userId): array|bool
+    function verifyDepositold($id, $data, $status, $userId): array|bool
     {
         try {
             // Start a database transaction to ensure data integrity
@@ -591,6 +591,133 @@ class admin
             return ['message' => 'Status updated Failed.', 'status' => $status, 'ID' => $id, 'Data' => $data, 'error' => $e];
         }
     }
+    public function verifyDeposit(string $transactionId, array $depositData, string $newStatus, string $userId): array
+{
+    try {
+        $this->pdo->beginTransaction();
+
+        /** ------------------------------
+         *  Step 1: Update transactions row
+         * ------------------------------ */
+        $stmt = $this->pdo->prepare("
+            UPDATE transactions 
+            SET status = :status 
+            WHERE transaction_id = :transaction_id
+        ");
+        if (!$stmt->execute([':status' => $newStatus, ':transaction_id' => $transactionId])) {
+            throw new Exception("Failed to update transaction: " . implode(' | ', $stmt->errorInfo()));
+        }
+
+        /** ------------------------------
+         *  Step 2: Update deposits row
+         * ------------------------------ */
+        $stmt = $this->pdo->prepare("
+            UPDATE deposits 
+            SET status = :status 
+            WHERE id = :id
+        ");
+        if (!$stmt->execute([':status' => $newStatus, ':id' => $depositData['id']])) {
+            throw new Exception("Failed to update deposit: " . implode(' | ', $stmt->errorInfo()));
+        }
+
+        /** ------------------------------
+         *  Step 3: If successful, update wallet
+         * ------------------------------ */
+        if ($newStatus === 'success') {
+            // Ensure wallet row exists for this user
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM wallet WHERE userid = :user_id");
+            $stmt->execute([':user_id' => $userId]);
+            if ($stmt->fetchColumn() == 0) {
+                $stmt = $this->pdo->prepare("INSERT INTO wallet (userid, deposit, bonus) VALUES (:user_id, 0, 0)");
+                $stmt->execute([':user_id' => $userId]);
+            }
+
+            // Update wallet deposit
+            $stmt = $this->pdo->prepare("
+                UPDATE wallet 
+                SET deposit = deposit + :amount 
+                WHERE userid = :user_id
+            ");
+            if (!$stmt->execute([':amount' => $depositData['amount'], ':user_id' => $userId])) {
+                throw new Exception("Failed to update wallet deposit: " . implode(' | ', $stmt->errorInfo()));
+            }
+
+            // Update wallet bonus
+            $bonusAmount = $depositData['amount'] * 0.10;
+            $stmt = $this->pdo->prepare("
+                UPDATE wallet 
+                SET bonus = bonus + :bonus 
+                WHERE userid = :user_id
+            ");
+            if (!$stmt->execute([':bonus' => $bonusAmount, ':user_id' => $userId])) {
+                throw new Exception("Failed to update wallet bonus: " . implode(' | ', $stmt->errorInfo()));
+            }
+
+            // Insert a bonus transaction
+            $bonusTransactionId = 'txn_' . substr(uniqid(), 0, 8);
+            $stmt = $this->pdo->prepare("
+                INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
+                VALUES (:transaction_id, :userid, 'deposit_bonus', :amount, 'bonus', 'success')
+            ");
+            if (!$stmt->execute([
+                ':transaction_id' => $bonusTransactionId,
+                ':userid'         => $userId,
+                ':amount'         => $bonusAmount
+            ])) {
+                throw new Exception("Failed to insert bonus transaction: " . implode(' | ', $stmt->errorInfo()));
+            }
+
+            /** ------------------------------
+             *  Step 4: Update user status if needed
+             * ------------------------------ */
+            $stmt = $this->pdo->prepare("SELECT status, referred_by FROM users WHERE userid = :user_id");
+            $stmt->execute([':user_id' => $userId]);
+            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($userRow && $userRow['status'] == 0) {
+                // Activate user
+                $stmt = $this->pdo->prepare("UPDATE users SET status = 1 WHERE userid = :user_id");
+                $stmt->execute([':user_id' => $userId]);
+
+                // Update referral counts if referred_by exists
+                if (!empty($userRow['referred_by'])) {
+                    $stmt = $this->pdo->prepare("
+                        UPDATE users 
+                        SET referral_count = referral_count + 1, 
+                            referral_count_inactive = referral_count_inactive - 1 
+                        WHERE referral_code = :referral_code
+                    ");
+                    $stmt->execute([':referral_code' => $userRow['referred_by']]);
+                }
+
+                // Track referral
+                $this->updateReferralTracking($userId);
+            }
+        }
+
+        /** ------------------------------
+         *  Step 5: Commit transaction
+         * ------------------------------ */
+        $this->pdo->commit();
+
+        return [
+            'message' => 'Status updated successfully.',
+            'status'  => $newStatus,
+            'transactionId' => $transactionId,
+            'depositData'   => $depositData
+        ];
+
+    } catch (Exception $e) {
+        $this->pdo->rollBack();
+        return [
+            'message' => 'Status update failed.',
+            'status'  => $newStatus,
+            'transactionId' => $transactionId,
+            'depositData'   => $depositData,
+            'error'   => $e->getMessage()
+        ];
+    }
+}
 
 
     /**
