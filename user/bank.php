@@ -26,8 +26,9 @@ if (isset($_POST['bank'])) {
     $ifsc = isset($_POST['ifsc_code']) ? htmlspecialchars(trim($_POST['ifsc_code'])) : '';
     $bankName = isset($_POST['bank_name']) ? htmlspecialchars(trim($_POST['bank_name'])) : '';
     $bankAccountName = isset($_POST['account_name']) ? htmlspecialchars(trim($_POST['account_name'])) : '';
-    $user->updatebankData($bankAccountName, $accountNumber, $ifsc, $userdata[0]['id'], $bankName);
-
+    $admin->insertData('accounts', ['bank_account_number' => $accountNumber, 'ifsc_code' => $ifsc, 'bank_name' => $bankName, 'bank_account_name' => $bankAccountName, 'userid' => $userdata[0]['id']]);
+    header("Location: index.php"); // Replace 'index.php' with your desired redirect page
+    exit();
     // Process the data (e.g., save to the database)
 }
 ?>
