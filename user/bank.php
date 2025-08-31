@@ -217,6 +217,7 @@ if (isset($_POST['bank'])) {
         <h2 class="text-lg font-semibold text-green-700 dark:text-green-400 mb-4">Saved Bank Accounts</h2>
         <div class="space-y-4">
           <?php
+          $accountdata = $admin->selectDataWithConditions('accounts', null, ['userid' => $userdata[0]['id']]);
           if ($accountdata) {
               foreach ($accountdata as $account) {
                   echo '<div class="border p-4 rounded-lg">';
