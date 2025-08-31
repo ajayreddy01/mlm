@@ -15,47 +15,68 @@ class Wallet extends admin
     public function deposit($userid, $amount, $data)
     {
         try {
-            // Start transaction
             $this->pdo->beginTransaction();
 
-            // Update wallet deposit amount
-
-
-            // Insert transaction record for deposit
-
+            // Generate transaction id
             $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
-            $stmt = $this->pdo->prepare("
-                INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
-                VALUES (:transaction_id, :userid, 'deposit', :amount, 'deposit', 'pending')
-            ");
-            $stmt->execute([
-                ':transaction_id' => $transaction_id,
-                ':userid' => $userid,
-                ':amount' => $amount
+
+            // Insert transaction record
+            $this->insertRow("transactions", [
+                'transaction_id' => $transaction_id,
+                'userid' => (int) $userid,
+                'type' => 'deposit',
+                'amount' => $amount,
+                'from_wallet' => 'deposit',
+                'status' => 'pending'
             ]);
-            $datadeposit = [
-                'userid' => $userid,
-                'bank_id' => $data['bank_id'],
+
+            // Insert deposit record
+            $this->insertRow("deposits", [
+                'userid' => (int) $userid,
+                'bank_id' => (int) $data['bank_id'],
                 'utr_number' => $data['utr_number'],
                 'bank_name' => $data['bank_name'],
                 'amount' => $amount,
                 'transaction_id' => $transaction_id,
                 'image' => $data['image'],
-                'status' => 'pending'
-            ];
-            var_dump($datadeposit);
-            $data = $this->insertData('deposits', $datadeposit);
+                'status' => 'pending',
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
 
-            // Commit transaction
             $this->pdo->commit();
-
             return ['status' => 'success', 'message' => 'Deposit successful'];
+
         } catch (Exception $e) {
-            // Rollback on error
             $this->pdo->rollBack();
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
     }
+
+    /**
+     * Helper: Insert row into a table
+     */
+    private function insertRow($table, $data)
+    {
+        $columns = array_keys($data);
+        $placeholders = array_map(fn($col) => ':' . $col, $columns);
+
+        $sql = "INSERT INTO {$table} (" . implode(',', $columns) . ") 
+            VALUES (" . implode(',', $placeholders) . ")";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($data as $col => $val) {
+            $stmt->bindValue(':' . $col, $val);
+        }
+
+        if (!$stmt->execute()) {
+            $error = $stmt->errorInfo();
+            throw new Exception("Insert into {$table} failed: " . $error[2]);
+        }
+
+        return $this->pdo->lastInsertId();
+    }
+
 
 
     // Method to withdraw amount from the wallet
