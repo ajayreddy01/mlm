@@ -18,6 +18,32 @@ if (!isset($_SESSION['userid'])) {
 }
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
+
+$walletdata = $wallet->getWalletBalance($_SESSION['userid']);
+$bankdata = $bank->selectbank($amount);
+
+
+// Handle form submission
+if (isset($_POST['submit'])) {
+    $utrNumber = $_POST['utr'] ?? '';
+
+
+    // Check and handle file upload
+    if (!empty($utrNumber) && isset($_FILES['image'])) {
+        $uploadFile = $admin->uploadImage($_FILES['image']);
+        $data = [
+            'bank_id' => $bankdata['id'],
+            'bank_name' => $bankdata['name'],
+            'utr_number' => $utrNumber,
+            'image' => $uploadFile
+        ];
+        $wallet->deposit($_SESSION['userid'], $amount, $data);
+        header('Location: https://agriinvestharvest.com/user/');
+        exit;
+    } else {
+        echo "Please provide both UTR Number and an image.";
+    }
+}
 ?><!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -198,13 +224,13 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
 
         <!-- QR Code -->
         <div class="flex justify-center mb-4">
-          <img src='images/qr.svg' 
+          <img src="<?php echo BASE_URL . $bankdata['image']; ?>"
                alt="QR Code" class="rounded-lg shadow-md">
         </div>
 
         <!-- Payment Form -->
-        <form class="space-y-4" @submit.prevent="submitted = true">
-          <input type="text" placeholder="Enter UTR Number" required
+        <form class="space-y-4" @submit.prevent="submitted = true" action="" method="post">
+          <input type="text" placeholder="Enter UTR Number" name="utr" id="utr" required
             class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 
                    focus:outline-none focus:ring-2 focus:ring-green-400">
 
@@ -215,7 +241,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
           <!-- Upload Screenshot -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Screenshot</label>
-            <input type="file" accept="image/*" 
+            <input type="file" name="image" id="image" accept="image/*" 
               @change="screenshot = $event.target.files[0]; preview = URL.createObjectURL(screenshot)"
               class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3
                      focus:outline-none focus:ring-2 focus:ring-green-400" required>
@@ -231,7 +257,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
               class="w-1/2 text-center bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-3 rounded-xl hover:bg-gray-400 dark:hover:bg-gray-600 transition">
               ⬅ Back
             </a>
-            <button type="submit" 
+            <button type="submit" name="submit" id="submit"
               class="w-1/2 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
               Submit
             </button>
