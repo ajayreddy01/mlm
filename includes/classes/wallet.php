@@ -15,7 +15,7 @@ class Wallet extends admin
     public function deposit($userid, $amount, $data)
     {
         try {
-            $this->pdo->beginTransaction();
+           
 
             // Generate transaction id
             $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
@@ -43,7 +43,7 @@ class Wallet extends admin
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
-            $this->pdo->commit();
+            
             return ['status' => 'success', 'message' => 'Deposit successful'];
 
         } catch (Exception $e) {
