@@ -28,11 +28,11 @@ class Wallet extends admin
                 INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
                 VALUES (:transaction_id, :userid, 'deposit', :amount, 'deposit', 'pending')
             ");
-            $stmt->execute([
+            var_dump($stmt->execute([
                 ':transaction_id' => $transaction_id,
                 ':userid' => $userid,
                 ':amount' => $amount
-            ]);
+            ]));
             $datadeposit = [
                 'userid' => $userid,
                 'bank_id' => (int) $data['bank_id'],
