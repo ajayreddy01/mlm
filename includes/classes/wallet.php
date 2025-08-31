@@ -43,9 +43,30 @@ class Wallet extends admin
                 'image' => $data['image'],
                 'status' => 'pending'
             ];
-            var_dump($datadeposit);
-            $insertId = $this->insertData('deposits', $datadeposit);
-            var_dump($insertId);
+            $sql = "INSERT INTO deposits 
+            (userid, bank_id, utr_number, bank_name, amount, transaction_id, image, status, created_at) 
+        VALUES 
+            (:userid, :bank_id, :utr_number, :bank_name, :amount, :transaction_id, :image, :status, NOW())";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(':userid', (int) $userid, PDO::PARAM_INT);
+            $stmt->bindValue(':bank_id', (int) $data['bank_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':utr_number', $data['utr_number'], PDO::PARAM_STR);
+            $stmt->bindValue(':bank_name', $data['bank_name'], PDO::PARAM_STR);
+            $stmt->bindValue(':amount', (int) $amount, PDO::PARAM_INT);
+            $stmt->bindValue(':transaction_id', $transaction_id, PDO::PARAM_STR);
+            $stmt->bindValue(':image', $data['image'], PDO::PARAM_STR);
+            $stmt->bindValue(':status', 'pending', PDO::PARAM_STR);
+
+            if ($stmt->execute()) {
+                $lastId = $this->pdo->lastInsertId();
+                echo "✅ Deposit inserted with ID: " . $lastId;
+            } else {
+                $error = $stmt->errorInfo();
+                echo "❌ SQL Error: " . $error[2];
+            }
+
 
 
             // Commit transaction
