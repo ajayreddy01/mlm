@@ -20,6 +20,11 @@ $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
 
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
+$amount = $_GET['amount'] ?? 0;
+if ($amount <= 500) {
+    header("Location: deposit.php");
+    exit();
+} 
 $bankdata = $bank->selectbank($amount);
 
 
