@@ -25,33 +25,34 @@ $bankdata = $bank->selectbank($_GET['amount']);
 
 
 if (isset($_POST['submit'])) {
-    $utrNumber = trim($_POST['utr'] ?? '');
+  $utrNumber = trim($_POST['utr'] ?? '');
 
-    // Validate UTR and file upload
-    if (!empty($utrNumber) && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        // Upload image using your custom function
-        $uploadFile = $admin->uploadImage($_FILES['image']);
+  // Validate UTR and file upload
+  if (!empty($utrNumber) && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    // Upload image using your custom function
+    $uploadFile = $admin->uploadImage($_FILES['image']);
 
-        $data = [
-            'bank_id'    => $bankdata['id'],
-            'bank_name'  => $bankdata['name'],
-            'utr_number' => $utrNumber,
-            'image'      => $uploadFile
-        ];
+    $data = [
+      'bank_id' => $bankdata['id'],
+      'bank_name' => $bankdata['name'],
+      'utr_number' => $utrNumber,
+      'image' => $uploadFile
+    ];
 
-        // Deposit function
-        $wallet->deposit($_SESSION['userid'], $amount, $data);
+    // Deposit function
+    $wallet->deposit($_SESSION['userid'], $amount, $data);
 
-        // Redirect on success
-        header('Location: https://agriinvestharvest.com/user/');
-        exit;
-    } else {
-        echo "<p style='color:red'>Please provide both UTR Number and an image.</p>";
-    }
+    // Redirect on success
+    header('Location: https://agriinvestharvest.com/user/');
+    exit;
+  } else {
+    echo "<p style='color:red'>Please provide both UTR Number and an image.</p>";
+  }
 }
 ?>
 
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en" class="light">
 
 <head>
@@ -229,10 +230,11 @@ if (isset($_POST['submit'])) {
         <span class="text-sm text-gray-500 dark:text-gray-400">Submit UTR</span>
       </div>
 
-      <div x-data="{ submitted: false, screenshot: null, preview: null }"
-        x-init="$store.formState ? submitted = true : ''">
+      <div x-data="{ submitted: false, preview: null }">
+        <!-- Show form until submitted -->
         <template x-if="!submitted">
-          <div>
+          <form class="space-y-4" action="" method="post" enctype="multipart/form-data">
+
             <h2 class="text-xl font-bold text-green-700 dark:text-green-300 mb-4">📲 Complete Your Payment</h2>
 
             <!-- Payable Amount -->
@@ -245,39 +247,37 @@ if (isset($_POST['submit'])) {
               <img src="<?php echo BASE_URL . $bankdata['image']; ?>" alt="QR Code" class="rounded-lg shadow-md">
             </div>
 
-            <!-- Payment Form -->
-            <form class="space-y-4" action="" method="post" enctype="multipart/form-data">
-              <input type="text" placeholder="Enter UTR Number" name="utr" id="utr" required class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 
+            <!-- UTR Input -->
+            <input type="text" name="utr" id="utr" placeholder="Enter UTR Number" required class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 
+             focus:outline-none focus:ring-2 focus:ring-green-400">
+
+            <!-- Remarks -->
+            <textarea name="remarks" placeholder="Remarks (optional)" rows="2" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 
+        focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+
+            <!-- Upload Screenshot -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Screenshot</label>
+              <input type="file" name="image" accept="image/*"id="image"
+                @change="preview = URL.createObjectURL($event.target.files[0])" required class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3
                  focus:outline-none focus:ring-2 focus:ring-green-400">
 
-              <textarea placeholder="Remarks (optional)" rows="2" name="remarks" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 
-                 focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+              <template x-if="preview">
+                <img :src="preview" alt="Preview" class="mt-3 rounded-lg shadow-md w-full max-h-56 object-contain">
+              </template>
+            </div>
 
-              <!-- Upload Screenshot -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Screenshot</label>
-                <input type="file" name="image" id="image" accept="image/*"
-                  @change="screenshot = $event.target.files[0]; preview = URL.createObjectURL(screenshot)" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3
-                   focus:outline-none focus:ring-2 focus:ring-green-400" required>
-
-                <!-- Preview -->
-                <template x-if="preview">
-                  <img :src="preview" alt="Preview" class="mt-3 rounded-lg shadow-md w-full max-h-56 object-contain">
-                </template>
-              </div>
-
-              <div class="flex gap-3">
-                <a href="deposit.php"
-                  class="w-1/2 text-center bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-3 rounded-xl hover:bg-gray-400 dark:hover:bg-gray-600 transition">
-                  ⬅ Back
-                </a>
-                <button type="submit" name="submit" id="submit"
-                  class="w-1/2 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+            <div class="flex gap-3">
+              <a href="deposit.php"
+                class="w-1/2 text-center bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-3 rounded-xl hover:bg-gray-400 dark:hover:bg-gray-600 transition">
+                ⬅ Back
+              </a>
+              <button type="submit" name="submit" id="submit"
+                class="w-1/2 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
+                Submit
+              </button>
+            </div>
+          </form>
         </template>
 
         <!-- Success Message -->
@@ -295,6 +295,7 @@ if (isset($_POST['submit'])) {
           </div>
         </template>
       </div>
+
     </section>
 
     <!-- Alpine.js -->
