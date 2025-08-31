@@ -30,7 +30,7 @@ class user extends admin
 
 
 
-    function userSignup($name, $mobile, $password, $referralCode = null,$email)
+    function userSignup($name, $mobile, $password, $referralCode = null, $email)
     {
         try {
             // Validate inputs
@@ -115,7 +115,7 @@ class user extends admin
                     echo "Password verified successfully.";
                     $_SESSION['userid'] = $user->userid;
                     $_SESSION['userdata'] = $user;
-                  
+
                     $_SESSION['name'] = $user->name;
                     $_SESSION['vip'] = 1;
                     header("Location: " . BASE_URL . "user/index.php");
@@ -196,29 +196,31 @@ class user extends admin
 
     function updatebankData($name, $accountNumber, $ifsc, $id, $bank_name)
     {
-        $sql = "UPDATE accounts 
-                SET bank_account_name = :bank_account_name, 
-                    bank_account_number = :bank_account_number, 
-                    bank_name = :bank_name, 
-                    ifsc_code = :ifsc_code
-                   
-                WHERE id = :id";
+        $sql = "
+            INSERT INTO accounts (user_id, bank_account_name, bank_account_number, bank_name, ifsc_code)
+            VALUES (:user_id, :bank_account_name, :bank_account_number, :bank_name, :ifsc_code)
+            ON DUPLICATE KEY UPDATE
+                bank_account_name = VALUES(bank_account_name),
+                bank_account_number = VALUES(bank_account_number),
+                bank_name = VALUES(bank_name),
+                ifsc_code = VALUES(ifsc_code)
+        ";
 
-        // Prepare the statement
         $stmt = $this->pdo->prepare($sql);
 
-        // Bind parameters
+        $stmt->bindParam(':user_id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':bank_account_name', $name, PDO::PARAM_STR);
         $stmt->bindParam(':bank_account_number', $accountNumber, PDO::PARAM_STR);
         $stmt->bindParam(':bank_name', $bank_name, PDO::PARAM_STR);
         $stmt->bindParam(':ifsc_code', $ifsc, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-        // Execute the statement
         $stmt->execute();
+
     }
 
-    public function resetpassword($token, $id, $newPassword) {}
+    public function resetpassword($token, $id, $newPassword)
+    {
+    }
 
 
     function generateString($str1, $str2)
@@ -259,8 +261,8 @@ class user extends admin
     }
 
     public function getActivePlanCount($userid)
-{
-    $sql = "
+    {
+        $sql = "
         SELECT COUNT(*) as active_plan_count
         FROM purchases p
         JOIN plans pr ON p.plan_id = pr.id 
@@ -269,18 +271,18 @@ class user extends admin
           AND NOW() BETWEEN p.purchase_date AND p.expiry_date;
     ";
 
-    // Prepare the statement
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+        // Prepare the statement
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
 
-    // Execute the statement
-    $stmt->execute();
+        // Execute the statement
+        $stmt->execute();
 
-    // Fetch single row
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Fetch single row
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    return $result['active_plan_count'];
-}
+        return $result['active_plan_count'];
+    }
 
 
     public function getlotterydata($userid)

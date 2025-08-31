@@ -25,7 +25,7 @@ if (isset($_POST['bank'])) {
     $ifsc = isset($_POST['ifsc_code']) ? htmlspecialchars(trim($_POST['ifsc_code'])) : '';
     $bankName = isset($_POST['bank_name']) ? htmlspecialchars(trim($_POST['bank_name'])) : '';
     $bankAccountName = isset($_POST['account_name']) ? htmlspecialchars(trim($_POST['account_name'])) : '';
-    $admin->insertData('accounts', ['bank_account_number' => $accountNumber, 'ifsc_code' => $ifsc, 'bank_name' => $bankName, 'bank_account_name' => $bankAccountName, 'userid' => $userdata[0]['id']]);
+    $user->updatebankData($bankAccountName, $accountNumber, $ifsc, $userdata[0]['id'], $bankName);
     header("Location: index.php"); // Replace 'index.php' with your desired redirect page
     exit();
     // Process the data (e.g., save to the database)
@@ -188,7 +188,7 @@ if (isset($_POST['bank'])) {
     <section class="p-6">
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
         <h2 class="text-lg font-semibold text-green-700 dark:text-green-400 mb-4">Add Bank Account</h2>
-        <form class="space-y-4">
+        <form class="space-y-4" method="post" action="">
           <div>
             <label class="block text-gray-600 dark:text-gray-300">Account Holder Name</label>
             <input type="text" name="account_name" id="account_name" placeholder="Enter full name" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
