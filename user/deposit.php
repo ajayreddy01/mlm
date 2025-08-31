@@ -172,24 +172,26 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       </div>
     </header>
     <!-- Balances -->
-    <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow text-center">
-        <p class="text-gray-500 text-sm">Balance</p>
-        <p class="text-xl font-bold">0.00</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow text-center">
-        <p class="text-gray-500 text-sm">Deposit Balance</p>
-        <p class="text-xl font-bold">0.00</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow text-center">
-        <p class="text-gray-500 text-sm">Withdraw Balance</p>
-        <p class="text-xl font-bold">0.00</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow text-center">
-        <p class="text-gray-500 text-sm">Bonus Balance</p>
-        <p class="text-xl font-bold">0.00</p>
-      </div>
-    </section>
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+        <!-- Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
+          <h2 class="text-sm text-gray-500 dark:text-gray-400">Balance</h2>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹<?php echo $walletdata->deposit+$walletdata->withdraw+$walletdata->bonus;?></p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
+          <h2 class="text-sm text-gray-500 dark:text-gray-400">Deposit Balance</h2>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ <?php echo $walletdata->deposit;?></p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
+          <h2 class="text-sm text-gray-500 dark:text-gray-400">Withdraw Balance</h2>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ <?php echo $walletdata->withdraw;?></p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 flex flex-col justify-between min-h-[140px]">
+          <h2 class="text-sm text-gray-500 dark:text-gray-400">Bonus Balance</h2>
+          <p class="text-3xl font-extrabold tabular-nums text-green-700 dark:text-green-400">₹ <?php echo $walletdata->bonus;?></p>
+        </div>
+      </section>
+
 
     <!-- Notice -->
     <section class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 p-4 rounded-lg mb-6 shadow">

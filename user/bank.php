@@ -18,6 +18,18 @@ if (!isset($_SESSION['userid'])) {
 }
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
+
+if (isset($_POST['bank'])) {
+    
+    $accountNumber = isset($_POST['account_number']) ? htmlspecialchars(trim($_POST['account_number'])) : '';
+    $ifsc = isset($_POST['ifsc_code']) ? htmlspecialchars(trim($_POST['ifsc_code'])) : '';
+    $bankName = isset($_POST['bank_name']) ? htmlspecialchars(trim($_POST['bank_name'])) : '';
+    $bankAccountName = isset($_POST['account_name']) ? htmlspecialchars(trim($_POST['account_name'])) : '';
+    $admin->insertData('accounts', ['bank_account_number' => $accountNumber, 'ifsc_code' => $ifsc, 'bank_name' => $bankName, 'bank_account_name' => $bankAccountName, 'userid' => $userdata[0]['id']]);
+    header("Location: index.php"); // Replace 'index.php' with your desired redirect page
+    exit();
+    // Process the data (e.g., save to the database)
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -179,21 +191,21 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
         <form class="space-y-4">
           <div>
             <label class="block text-gray-600 dark:text-gray-300">Account Holder Name</label>
-            <input type="text" placeholder="Enter full name" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
+            <input type="text" name="account_name" id="account_name" placeholder="Enter full name" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
           </div>
           <div>
             <label class="block text-gray-600 dark:text-gray-300">Account Number</label>
-            <input type="text" placeholder="Enter account number" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
+            <input type="text" name="account_number" id="account_number" placeholder="Enter account number" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
           </div>
           <div>
             <label class="block text-gray-600 dark:text-gray-300">IFSC Code</label>
-            <input type="text" placeholder="Enter IFSC" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
+            <input type="text" name="ifsc_code" id="ifsc_code" placeholder="Enter IFSC" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
           </div>
           <div>
-            <label class="block text-gray-600 dark:text-gray-300">Branch Name</label>
-            <input type="text" placeholder="Enter branch" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
+            <label class="block text-gray-600 dark:text-gray-300">Bank Name</label>
+            <input type="text" name="bank_name" id="bank_name" placeholder="Enter branch" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:border-gray-600">
           </div>
-          <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Save Bank</button>
+          <button type="submit" name="bank" id="bank" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Save Bank</button>
         </form>
       </div>
     </section>
