@@ -130,7 +130,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
     <!-- / Layout wrapper -->
 
     <?php echo $template_admin->body_includes(); ?>
-    <script src="<?php echo BASE_URL ?>/assets/js/deposit.js?12"></script>
+    <script src="<?php echo BASE_URL ?>/assets/js/deposit.js?13"></script>
    
 
 
