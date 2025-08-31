@@ -175,7 +175,7 @@ $(function () {
     console.log("Row Data:", rowData);
 
     $.ajax({
-      url: "https://vktsr.vip/api/admin/verifydeposit",
+      url: "https://agriinvestharvest.com/api/admin/verifydeposit",
       method: "POST",
       data: {
         transaction_id: transactionId,
