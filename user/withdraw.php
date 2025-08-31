@@ -18,6 +18,28 @@ if (!isset($_SESSION['userid'])) {
 }
 $walletdata = $wallet->getWalletBalance($_SESSION['userid']);
 $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSION['userid']]);
+
+if (isset($_POST['submit'])) {
+    $amount = checkinput($_POST['amount']);
+    if ($amount < 550) {
+        $errorMsg =  '
+                    <div class="alert alert-danger alert-dismissible mb-4" role="alert">
+                        The minimum Withdraw amount is 1000
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+        ';
+    } elseif ($walletdata->withdraw < $amount) {
+        $errorMsg =  '
+                    <div class="alert alert-danger alert-dismissible mb-4" role="alert">
+                        Insufficent  Withdraw amount 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+        ';
+    } else {
+    $wallet->withdraw($_SESSION['userid'], $amount);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+    }
+}
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -207,23 +229,15 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
 
   <h2 class="text-lg font-semibold text-green-700 dark:text-green-300 mb-4">💳 Enter Amount</h2>
 
-  <form @submit.prevent="
-          if(amount >= 550){ 
-            withdraw = amount; 
-            submitted = false; 
-            showModal = true 
-          } else { 
-            alert('Minimum withdraw is 550') 
-          }" 
-        class="space-y-4">
+  <form class="space-y-4" action="" method="POST">
 
-    <input type="number" x-model="amount" min="550"
+    <input type="number" x-model="amount" min="550" name="amount" required id="amount"
   placeholder="Enter Amount (min 550)" 
   class="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-3 
          focus:outline-none focus:ring-2 focus:ring-green-400
          text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
 
-    <button type="submit" 
+    <button type="submit" name="submit" id="submit"
       class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
       Withdraw Now
     </button>
