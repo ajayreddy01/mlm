@@ -40,7 +40,9 @@ if (isset($_POST['submit'])) {
     ];
 
     // Deposit function
-    $wallet->deposit($_SESSION['userid'], $amount, $data);
+    $result = $wallet->deposit($_SESSION['userid'], $amount, $data);
+    var_dump($result);
+
 
     // Redirect on success
     //header('Location: https://agriinvestharvest.com/user/');
@@ -258,7 +260,7 @@ if (isset($_POST['submit'])) {
             <!-- Upload Screenshot -->
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Screenshot</label>
-              <input type="file" name="image" accept="image/*"id="image"
+              <input type="file" name="image" accept="image/*" id="image"
                 @change="preview = URL.createObjectURL($event.target.files[0])" required class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3
                  focus:outline-none focus:ring-2 focus:ring-green-400">
 

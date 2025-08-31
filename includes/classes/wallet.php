@@ -12,45 +12,63 @@ class Wallet extends admin
     }
 
     // Method to deposit amount to the wallet
-    public function deposit($userid, $amount, $data)
-    {
-        try {
-            $this->pdo->beginTransaction();
+   public function deposit($userid, $amount, $data)
+{
+    try {
+        $this->pdo->beginTransaction();
 
-            // Generate transaction id
-            $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
+        // Generate transaction id
+        $transaction_id = 'txn_' . substr(uniqid(), 0, 8);
 
-            // Insert transaction record
-            $this->insertRow("transactions", [
-                'transaction_id' => $transaction_id,
-                'userid' => (int) $userid,
-                'type' => 'deposit',
-                'amount' => $amount,
-                'from_wallet' => 'deposit',
-                'status' => 'pending'
-            ]);
+        // Insert into transactions
+        $stmt1 = $this->pdo->prepare("
+            INSERT INTO transactions (transaction_id, userid, type, amount, from_wallet, status) 
+            VALUES (:transaction_id, :userid, 'deposit', :amount, 'deposit', 'pending')
+        ");
 
-            // Insert deposit record
-            $this->insertRow("deposits", [
-                'userid' => (int) $userid,
-                'bank_id' => (int) $data['bank_id'],
-                'utr_number' => $data['utr_number'],
-                'bank_name' => $data['bank_name'],
-                'amount' => $amount,
-                'transaction_id' => $transaction_id,
-                'image' => $data['image'],
-                'status' => 'pending',
-                'created_at' => date('Y-m-d H:i:s')
-            ]);
-
-            $this->pdo->commit();
-            return ['status' => 'success', 'message' => 'Deposit successful'];
-
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            return ['status' => 'error', 'message' => $e->getMessage()];
+        if (!$stmt1->execute([
+            ':transaction_id' => $transaction_id,
+            ':userid'         => (int) $userid,
+            ':amount'         => $amount
+        ])) {
+            $error = $stmt1->errorInfo();
+            throw new Exception("Transaction insert failed: " . $error[2]);
         }
+
+        // Insert into deposits
+        $stmt2 = $this->pdo->prepare("
+            INSERT INTO deposits 
+                (userid, bank_id, utr_number, bank_name, amount, transaction_id, image, status, created_at) 
+            VALUES 
+                (:userid, :bank_id, :utr_number, :bank_name, :amount, :transaction_id, :image, :status, NOW())
+        ");
+
+        $success = $stmt2->execute([
+            ':userid'        => (int) $userid,
+            ':bank_id'       => (int) $data['bank_id'],
+            ':utr_number'    => $data['utr_number'],
+            ':bank_name'     => $data['bank_name'],
+            ':amount'        => $amount,
+            ':transaction_id'=> $transaction_id,
+            ':image'         => $data['image'],
+            ':status'        => 'pending'
+        ]);
+
+        if (!$success) {
+            $error = $stmt2->errorInfo();
+            throw new Exception("Deposit insert failed: " . $error[2]);
+        }
+
+        $this->pdo->commit();
+
+        return ['status' => 'success', 'message' => 'Deposit successful'];
+
+    } catch (Exception $e) {
+        $this->pdo->rollBack();
+        return ['status' => 'error', 'message' => $e->getMessage()];
     }
+}
+
 
     /**
      * Helper: Insert row into a table
