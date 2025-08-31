@@ -12,7 +12,7 @@ $(function () {
   if (dt_responsive_table.length) {
     var dt_responsive = dt_responsive_table.DataTable({
       ajax: {
-        url: "https://vktsr.vip/api/admin/getalldeposits", // URL to your PHP script
+        url: "https://agriinvestharvest.com/api/admin/getalldeposits", // URL to your PHP script
         method: "GET", // HTTP method
         dataSrc: function (json) {
           return json; // The response data directly comes in the correct format (array of objects)

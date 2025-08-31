@@ -5,7 +5,7 @@ $(function () {
     if (withdraw_table.length) {
       var dt_responsive = withdraw_table.DataTable({
         ajax: {
-          url: "https://vktsr.vip/api/admin/getallwithdraws",
+          url: "https://agriinvestharvest.com/api/admin/getallwithdraws",
           method: "GET",
           dataSrc: function (json) {
             console.log(json); // Debug the returned JSON data

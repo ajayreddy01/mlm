@@ -150,7 +150,7 @@ function buyplan() {
 
   // Make AJAX call to the API
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://vktsr.vip/api/user/buyplan", true);
+  xhr.open("POST", "https://agriinvestharvest.com/api/user/buyplan", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
   // Encode data as URL parameters
@@ -211,7 +211,7 @@ function buylottery() {
     data.append('id', lotteryId); // Sending amount again as per your current PHP case
 
     // Send the data to the 'buylottery' endpoint using Fetch API
-    fetch('https://vktsr.vip/api/user/buylottery', {
+    fetch('https://agriinvestharvest.com/api/user/buylottery', {
       method: 'POST',
       body: data // Send the FormData object
     })
