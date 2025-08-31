@@ -91,7 +91,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       <a href="plans.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">📋 Plans</a>
       <a href="luckydraw.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">🎁 Lucky Draw</a>
       <a href="tasks.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">✅ Tasks</a>
-      <a href="transactions.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">📑 My Bill</a>
+      
       <a href="bank.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">🏦 Bank Account</a>
       <a href="invite.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">🤝 Invite</a>
       <a href="deposit.php" class="flex items-center gap-2 hover:bg-green-600 p-2 rounded">⬆️ Deposit</a>
@@ -215,7 +215,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
     <a href="dashboard.php">🏠</a>
     <a href="wallet.php">💰</a>
     <a href="plans.php">📋</a>
-    <a href="transactions.php">📑</a>
+    
     <a href="profile.php">👤</a>
   </nav>
 </body>
