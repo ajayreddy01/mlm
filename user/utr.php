@@ -39,15 +39,15 @@ if (isset($_POST['submit'])) {
       'image' => $uploadFile
     ];
 
-    var_dump($_SESSION['userid']);
+   
 
     // Deposit function
     $result = $wallet->deposit($_SESSION['userid'], $amount, $data);
-    var_dump($result);
+  
 
 
     // Redirect on success
-    //header('Location: https://agriinvestharvest.com/user/');
+    header('Location: https://agriinvestharvest.com/user/');
     exit;
   } else {
     echo "<p style='color:red'>Please provide both UTR Number and an image.</p>";
