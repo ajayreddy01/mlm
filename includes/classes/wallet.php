@@ -45,6 +45,7 @@ class Wallet extends admin
             ];
             var_dump($datadeposit);
             $data = $this->insertData('deposits', $datadeposit);
+            var_dump($this->pdo->errorInfo());
 
             // Commit transaction
             $this->pdo->commit();
