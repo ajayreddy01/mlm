@@ -328,7 +328,8 @@ if (isset($_POST['submit'])) {
         <tbody>
           <?php
            $data = $admin->selectDataWithConditions('withdraws', null, ['user_id' => $_SESSION['userid']]);
-          foreach ($data as $row) {
+          $data = array_reverse($data); // Reverse the array to show latest first
+           foreach ($data as $row) {
                 // Format amount (add + or - with color)
                 
                   $amount = "- ₹" . number_format($row['amount'], 2);

@@ -247,8 +247,10 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
               <?php
               $data = $admin->selectDataWithConditions('transactions', null, ['userid' => $_SESSION['userid']]);
+              
+              $data = array_reverse($data); // Reverse the array to show latest first
               foreach ($data as $row) {
-                // Format amount (add + or - with color)
+               
                 $amount = $row['amount'];
                 $amountClass = "text-yellow-700"; // default
                 if (strtolower($row['type']) === "deposit") {

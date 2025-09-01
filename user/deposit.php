@@ -243,7 +243,8 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
         <tbody>
           <?php
            $data = $admin->selectDataWithConditions('deposits', null, ['userid' => $_SESSION['userid']]);
-          foreach ($data as $row) {
+          $data = array_reverse($data); // Reverse the array to show latest first
+           foreach ($data as $row) {
                 // Format amount (add + or - with color)
                 
                   $amount = "+ ₹" . number_format($row['amount'], 2);

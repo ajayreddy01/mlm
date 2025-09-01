@@ -143,6 +143,7 @@ try {
                 'type' => $_POST['plantype'],
                 'description' => $_POST['desc'],
             ];
+            
             echo json_encode($admin->insertData('lottery_types', $data));
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
