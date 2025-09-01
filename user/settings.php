@@ -206,7 +206,7 @@ if (isset($_POST['changepass'])) {
             <div class="space-y-4">
               <div>
                 <label class="block text-gray-600 dark:text-gray-300">Full Name</label>
-                <input type="text" name="name" id="name" value="<?php echo $userdata[0]['name'] ?> Kumar"
+                <input type="text" name="name" id="name" value="<?php echo $userdata[0]['name'] ?>"
                   class="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:text-white">
               </div>
               <div>
