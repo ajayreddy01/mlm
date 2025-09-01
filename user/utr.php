@@ -178,31 +178,7 @@ if (isset($_POST['submit'])) {
       <div class="flex items-center gap-4">
         <button onclick="toggleTheme()" class="bg-gray-200 dark:bg-yellow-400 px-3 py-1 rounded-lg">🌗</button>
 
-        <!-- Notifications -->
-        <div class="relative">
-          <button id="notifBtn" onclick="toggleNotifMenu()" class="relative cursor-pointer">
-            🔔
-            <span class="absolute -top-1 -right-1 bg-red-500 text-xs text-white px-1 rounded-full">3</span>
-          </button>
-          <div id="notifMenu"
-            class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50">
-            <div class="p-3 border-b dark:border-gray-700 font-semibold">Notifications</div>
-            <div class="max-h-60 overflow-y-auto">
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">💰 You received ₹500
-                in Wallet</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">✅ Task "Water wheat
-                field" is pending</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">🎁 Lucky Draw #124124
-                starts today</a>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ Update your bank
-                account details</a>
-            </div>
-            <div class="p-2 text-center border-t dark:border-gray-700">
-              <a href="notifications.php" class="text-green-600 dark:text-green-400 text-sm font-medium">View All</a>
-            </div>
-          </div>
-        </div>
-
+       
         <!-- Profile -->
         <div class="relative">
           <img id="profileBtn" onclick="toggleProfileMenu()" src="images/profile.jpg"
