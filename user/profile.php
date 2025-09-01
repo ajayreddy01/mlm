@@ -82,7 +82,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
         <p class="text-lg font-bold">🌱 Agri Invest</p>
-        <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
+        <p class="text-sm text-green-200">Welcome, <?php echo $userdata[0]['name']?> 👨‍🌾</p>
       </div>
     </div>
     <nav class="flex flex-col space-y-3 mt-6 overflow-y-auto">
@@ -106,7 +106,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
         <div>
           <p class="text-lg font-bold">🌱 Agri Invest</p>
-          <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
+          <p class="text-sm text-green-200">Welcome, <?php echo $userdata[0]['name']?> 👨‍🌾</p>
         </div>
       </div>
       <button onclick="toggleSidebar()">❌</button>
@@ -163,7 +163,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
                src="images/profile.jpg" 
                class="w-10 h-10 rounded-full border shadow cursor-pointer">
           <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
-            <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a>
+             <!-- <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a> -->
             <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp Group</a>
             <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️ Settings</a>
             <a href="dashboard.php?logout=true" class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
@@ -185,7 +185,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
           </label>
           <img src="images/profile.jpg" alt="Profile" class="w-24 h-24 rounded-full border-4 border-green-600 shadow">
          
-          <h2 class="text-xl font-bold text-green-700 dark:text-green-400 mt-3">Ramesh Kumar</h2>
+          <h2 class="text-xl font-bold text-green-700 dark:text-green-400 mt-3"><?php echo $userdata[0]['name']?> Kumar</h2>
           <p class="text-gray-500 dark:text-gray-400 text-sm">Village: Rampur</p>
         </div>
 
@@ -205,7 +205,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
         <form class="mt-6 space-y-4">
           <div>
             <label class="block text-gray-600 dark:text-gray-300">Full Name</label>
-            <input type="text" value="Ramesh Kumar" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:text-white">
+            <input type="text" value="<?php echo $userdata[0]['name']?> Kumar" class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 dark:bg-gray-700 dark:text-white">
           </div>
           <div>
             <label class="block text-gray-600 dark:text-gray-300">Mobile Number</label>

@@ -95,7 +95,7 @@ if (isset($_POST['bank'])) {
       <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
       <div>
         <p class="text-lg font-bold">🌱 Agri Invest</p>
-        <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
+        <p class="text-sm text-green-200">Welcome, <?php echo $userdata[0]['name']?> 👨‍🌾</p>
       </div>
     </div>
     <nav class="flex flex-col space-y-3 mt-6 overflow-y-auto">
@@ -119,7 +119,7 @@ if (isset($_POST['bank'])) {
         <img src="images/profile.jpg" class="w-12 h-12 rounded-full border-2 border-white shadow">
         <div>
           <p class="text-lg font-bold">🌱 Agri Invest</p>
-          <p class="text-sm text-green-200">Welcome, Ramesh 👨‍🌾</p>
+          <p class="text-sm text-green-200">Welcome, <?php echo $userdata[0]['name']?> 👨‍🌾</p>
         </div>
       </div>
       <button onclick="toggleSidebar()">❌</button>
@@ -176,7 +176,7 @@ if (isset($_POST['bank'])) {
                src="images/profile.jpg" 
                class="w-10 h-10 rounded-full border shadow cursor-pointer">
           <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden z-50">
-            <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a>
+             <!-- <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Profile</a> -->
             <a href="whatsapp.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📱 WhatsApp Group</a>
             <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️ Settings</a>
             <a href="dashboard.php?logout=true" class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Logout</a>
