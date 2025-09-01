@@ -316,6 +316,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       overlay.classList.toggle("hidden");
     }
   </script>
+  <script src="../assets/js/user-defined.js"></script>
 </body>
 
 </html>
