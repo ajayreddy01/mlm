@@ -327,7 +327,7 @@ if (isset($_POST['submit'])) {
         </thead>
         <tbody>
           <?php
-           $data = $admin->selectDataWithConditions('withdraws', null, ['userid' => $_SESSION['userid']]);
+           $data = $admin->selectDataWithConditions('withdraws', null, ['user_id' => $_SESSION['userid']]);
           foreach ($data as $row) {
                 // Format amount (add + or - with color)
                 
