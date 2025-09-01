@@ -756,7 +756,7 @@ class admin
                 $sqlUpdateWallet = "UPDATE wallet SET withdraw = withdraw + :amount WHERE userid = :user_id";
                 $stmtUpdateWallet = $this->pdo->prepare($sqlUpdateWallet);
                 $stmtUpdateWallet->bindParam(':amount', $amount1, PDO::PARAM_STR);
-                $stmtUpdateWallet->bindParam(':user_id', $userId, PDO::PARAM_INT);
+                $stmtUpdateWallet->bindParam(':user_id', $userId, PDO::PARAM_STR);
                 $stmtUpdateWallet->execute();
             }
 
