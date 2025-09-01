@@ -192,7 +192,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <?php
         // Fetch lotteries from API
-        $apiUrl = "http://laxfuel.in/api/user/getalllottery";
+        $apiUrl = "http://agriinvestharvest.com/api/user/getalllottery";
         $response = file_get_contents($apiUrl);
         $lotteries = json_decode($response, true);
 
