@@ -1,6 +1,5 @@
 <?php
 include '../includes/init.php';
-session_start(); // ✅ Always start session at the top
 
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
