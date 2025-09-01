@@ -28,7 +28,7 @@ class Wallet extends admin
 
         if (!$stmt1->execute([
             ':transaction_id' => $transaction_id,
-            ':userid'         => (int) $userid,
+            ':userid'         =>  $userid,
             ':amount'         => $amount
         ])) {
             $error = $stmt1->errorInfo();
