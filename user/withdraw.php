@@ -315,6 +315,7 @@ if (isset($_POST['submit'])) {
     <!-- Withdraw History -->
     <section class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 overflow-x-auto">
       <h2 class="text-lg font-semibold text-green-700 dark:text-green-300 mb-4">📋 Withdraw History</h2>
+      
       <table class="w-full border-collapse text-sm">
         <thead>
           <tr class="bg-green-100 dark:bg-gray-700 text-green-800 dark:text-green-300">
@@ -325,12 +326,35 @@ if (isset($_POST['submit'])) {
           </tr>
         </thead>
         <tbody>
-          <tr class="text-center">
-            <td class="border p-2">-</td>
-            <td class="border p-2">-</td>
-            <td class="border p-2">-</td>
-            <td class="border p-2">-</td>
-          </tr>
+          <?php
+           $data = $admin->selectDataWithConditions('withdraws', null, ['userid' => $_SESSION['userid']]);
+          foreach ($data as $row) {
+                // Format amount (add + or - with color)
+                
+                  $amount = "- ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-red-600";
+                
+
+                // Status badge color
+                $statusClass = "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300";
+                if (strtolower($row['status']) === "success") {
+                  $statusClass = "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300";
+                } elseif (strtolower($row['status']) === "pending") {
+                  $statusClass = "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300";
+                } elseif (strtolower($row['status']) === "failed") {
+                  $statusClass = "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300";
+                }
+
+                echo '
+              <tr class="text-center">
+                <td class="border p-2">#' . $row['transaction_id'] . '</td>
+                
+                <td class="border p-2 ' . $amountClass . '">' . $amount . '</td>
+                <td class="border p-2">' . $row['created_at'] . '</td>
+                <td class="border p-2"><span class="' . $statusClass . ' px-2 py-1 rounded-lg text-xs">' . ucfirst($row['status']) . '</span></td>
+              </tr>';
+              }?>
+          
         </tbody>
       </table>
     </section>

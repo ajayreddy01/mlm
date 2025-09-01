@@ -254,7 +254,32 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
                 if (strtolower($row['type']) === "deposit") {
                   $amount = "+ ₹" . number_format($row['amount'], 2);
                   $amountClass = "text-green-600";
-                } else {
+                }
+                elseif (strtolower($row['type']) === "deposit_bonus") {
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                }
+                elseif (strtolower($row['type']) === "bonus") {
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                }
+                elseif (strtolower($row['type']) === "commission") {
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                } 
+                  elseif (strtolower($row['type']) === "lottery_winning") {
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                }
+                elseif (strtolower($row['type']) === "daily_earnings") {
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                }
+                elseif (strtolower($row['type']) === "plan_maturity_bonus") {
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                }
+                else{
                   $amount = "- ₹" . number_format($row['amount'], 2);
                   $amountClass = "text-red-600";
                 }

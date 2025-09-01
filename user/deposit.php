@@ -241,12 +241,35 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
           </tr>
         </thead>
         <tbody>
-          <tr class="text-center">
-            <td class="border p-2">-</td>
-            <td class="border p-2">-</td>
-            <td class="border p-2">-</td>
-            <td class="border p-2">-</td>
-          </tr>
+          <?php
+           $data = $admin->selectDataWithConditions('deposits', null, ['userid' => $_SESSION['userid']]);
+          foreach ($data as $row) {
+                // Format amount (add + or - with color)
+                
+                  $amount = "+ ₹" . number_format($row['amount'], 2);
+                  $amountClass = "text-green-600";
+                
+
+                // Status badge color
+                $statusClass = "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300";
+                if (strtolower($row['status']) === "success") {
+                  $statusClass = "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300";
+                } elseif (strtolower($row['status']) === "pending") {
+                  $statusClass = "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300";
+                } elseif (strtolower($row['status']) === "failed") {
+                  $statusClass = "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300";
+                }
+
+                echo '
+              <tr class="text-center">
+                <td class="border p-2">#' . $row['transaction_id'] . '</td>
+                
+                <td class="border p-2 ' . $amountClass . '">' . $amount . '</td>
+                <td class="border p-2">' . $row['created_at'] . '</td>
+                <td class="border p-2"><span class="' . $statusClass . ' px-2 py-1 rounded-lg text-xs">' . ucfirst($row['status']) . '</span></td>
+              </tr>';
+              }?>
+          
         </tbody>
       </table>
     </section>
