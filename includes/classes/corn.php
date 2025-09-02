@@ -94,18 +94,24 @@ class cornjobs extends Wallet
     }
     public function lottery_winner_daily()
     {
-        $sql = "SELECT t.user_id, t.ticket_number, l.winning AS lottery_winning, t.lottery_id, l.name AS lottery_name
-            FROM tickets t
-            INNER JOIN lottery_types  l ON t.lottery_id = l.id
-            WHERE l.type = 'Daily'
-            AND t.status = 'open'
-            AND t.id = (
-                SELECT t1.id
-                FROM tickets t1
-                WHERE t1.lottery_id = t.lottery_id
-                ORDER BY RAND()
-                LIMIT 1
-            );
+            $sql = "WITH random_tickets AS (
+                    SELECT t1.id,
+                        t1.lottery_id,
+                        ROW_NUMBER() OVER (PARTITION BY t1.lottery_id ORDER BY RAND()) AS rn
+                    FROM tickets t1
+                    JOIN lottery_types l1 ON t1.lottery_id = l1.id
+                    WHERE l1.type = 'Daily'
+                    AND t1.status = 'open'
+                )
+                SELECT t.user_id,
+                    t.ticket_number,
+                    l.winning AS lottery_winning,
+                    t.lottery_id,
+                    l.name AS lottery_name
+                FROM random_tickets r
+                JOIN tickets t ON t.id = r.id
+                JOIN lottery_types l ON t.lottery_id = l.id
+                WHERE r.rn = 1;
                 ";
 
         // Prepare the statement
@@ -126,8 +132,11 @@ class cornjobs extends Wallet
             $this->insertData('winners', $data);
         }
 
-        $sql = "UPDATE tickets SET status = 'closed';";
-        // Prepare the statement
+        $sql = "UPDATE tickets 
+                JOIN lottery_types ON tickets.lottery_id = lottery_types.id
+                SET tickets.status = 'closed'
+                WHERE lottery_types.type = 'Daily';
+                ;";        // Prepare the statement
         $stmt = $this->pdo->prepare($sql);
 
 
@@ -135,5 +144,54 @@ class cornjobs extends Wallet
         $stmt->execute();
     }
 
-    public function lottery_winner_weekly() {}
+    public function lottery_winner_weekly() {
+         $sql = "WITH random_tickets AS (
+                    SELECT t1.id,
+                        t1.lottery_id,
+                        ROW_NUMBER() OVER (PARTITION BY t1.lottery_id ORDER BY RAND()) AS rn
+                    FROM tickets t1
+                    JOIN lottery_types l1 ON t1.lottery_id = l1.id
+                    WHERE l1.type = 'Weekly'
+                    AND t1.status = 'open'
+                )
+                SELECT t.user_id,
+                    t.ticket_number,
+                    l.winning AS lottery_winning,
+                    t.lottery_id,
+                    l.name AS lottery_name
+                FROM random_tickets r
+                JOIN tickets t ON t.id = r.id
+                JOIN lottery_types l ON t.lottery_id = l.id
+                WHERE r.rn = 1;
+                ";
+
+        // Prepare the statement
+        $stmt = $this->pdo->prepare($sql);
+
+        // Bind the user_id parameter
+        // Execute the statement
+        $stmt->execute();
+        $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
+        print_r($result);
+        foreach ($result as $row) {
+            $this->addwithdrawfunc($row['user_id'], $row['lottery_winning'], 'lottery_winning');
+
+            // Execute the statement
+            $stmt->execute();
+            $data = ['lottery_id' => $row['lottery_id'], 'user_id' => $row['user_id'], 'ticket_number' => $row['ticket_number'], 'prize_amount' => $row['lottery_winning']];
+
+            $this->insertData('winners', $data);
+        }
+
+        $sql = "UPDATE tickets 
+                JOIN lottery_types ON tickets.lottery_id = lottery_types.id
+                SET tickets.status = 'closed'
+                WHERE lottery_types.type = 'Weekly';
+                ;";        // Prepare the statement
+        $stmt = $this->pdo->prepare($sql);
+
+
+        // Execute the statement
+        $stmt->execute();
+    }
 }
