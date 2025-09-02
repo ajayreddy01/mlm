@@ -1,6 +1,6 @@
 <?php
 include '../includes/init.php';
-header('Loaction: settings.php');
+header('Location: settings.php');
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     // Destroy session
