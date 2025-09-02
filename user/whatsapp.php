@@ -1,6 +1,6 @@
 <?php
 include '../includes/init.php';
-$links = include __DIR__ . '../includes/social.php';
+$links = include  '../includes/social.php';
 $whtsapplink = $links['whatsapp'];
 $telelink   = $links['telegram'];
 // Logout logic

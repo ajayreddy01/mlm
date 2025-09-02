@@ -1,5 +1,8 @@
 <?php
 include '../includes/init.php';
+$links = include  '../includes/social.php';
+$whtsapplink = $links['whatsapp'];
+$telelink   = $links['telegram'];
 if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
     $id = $_SESSION['admin_id'];
 } else {
