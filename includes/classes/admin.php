@@ -202,25 +202,30 @@ class admin
      * @param string $end_date End date of the period
      * @return float Total lottery sales in INR
      */
-   function getLotterySales($period)
+function getLotterySales($period)
 {
     $dates = $this->getDateRange($period);
     $start_date = $dates[0];
     $end_date = $dates[1];
 
-    // Multiply ticket price by number of tickets sold in date range
+    // Each row in tickets = 1 ticket sold
+    // Join to lotteries to get ticket price, sum all
     $stmt = $this->pdo->prepare("
-        SELECT COALESCE(SUM(l.ticket), 0) * COUNT(t.id) AS lottery_sales
+        SELECT COALESCE(SUM(l.ticket), 0) AS lottery_sales
         FROM tickets t
-        JOIN lotteries l ON t.lottery_id = l.id
+        JOIN lottery_types l ON t.lottery_id = l.id
         WHERE DATE(t.created_at) BETWEEN :start_date AND :end_date
     ");
 
-    $stmt->execute(['start_date' => $start_date, 'end_date' => $end_date]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt->execute([
+        'start_date' => $start_date,
+        'end_date'   => $end_date
+    ]);
 
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result['lottery_sales'] ?? 0.00;
 }
+
 
 
     // Example output
