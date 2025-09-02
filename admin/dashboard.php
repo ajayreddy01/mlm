@@ -92,7 +92,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                                         <input type="url" class="form-control"name="telegram" id="telegram"
                                                             value="<?php echo htmlspecialchars($telelink); ?>" required>
 
-                                                        <button type="submit">Update Links</button>
+                                                        <button class="btn btn-primary" type="submit">Update Links</button>
                                                     </form>
 
                                                 </div>
