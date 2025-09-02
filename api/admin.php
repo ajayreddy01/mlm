@@ -100,7 +100,7 @@ try {
                 'daily_income' => $_POST['daily_income'],
                 'days' => $_POST['days'],
                 'bonus' => $_POST['bonus'],
-                'total_revenue' => $_POST['revnue'],
+                'total_revenue' => $_POST['revenue'],
                 'invitation_commission' => $_POST['invitation_commission'],
                 'rate_of_return' => $_POST['ror'],
                 'purchase_limit' => $_POST['limit'],
