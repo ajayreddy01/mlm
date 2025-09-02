@@ -1,5 +1,8 @@
 <?php
 include '../includes/init.php';
+$links = include __DIR__ . '../includes/social.php';
+$whtsapplink = $links['whatsapp'];
+$telelink   = $links['telegram'];
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     // Destroy session
@@ -178,7 +181,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
 
         <div class="mt-4 flex flex-col sm:flex-row gap-3">
           <a
-            href="https://chat.whatsapp.com/YOUR_WHATSAPP_GROUP_INVITE"
+            href="<?php echo $whtsapplink?>"
             target="_blank"
             class="flex-1 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
           >
@@ -192,16 +195,9 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
           </button>
         </div>
 
-        <!-- Optional QR (replace image) -->
-        <div class="mt-4 flex items-center gap-3">
-          <img src="images/whatsapp-qr.png" alt="WhatsApp Group QR (optional)" class="w-24 h-24 rounded border dark:border-gray-700 object-cover">
-          <div class="text-xs text-gray-500 dark:text-gray-400">
-            Scan to join via mobile camera (optional). Replace <code>images/whatsapp-qr.png</code> with your QR image.
-          </div>
-        </div>
-
+       
         <!-- Hidden input for copy -->
-        <input id="waLink" type="text" class="sr-only" value="https://chat.whatsapp.com/YOUR_WHATSAPP_GROUP_INVITE" readonly>
+        <input id="waLink" type="text" class="sr-only" value="<?php echo $whtsapplink?>" readonly>
       </div>
 
       <!-- Telegram Card -->
@@ -217,7 +213,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
 
         <div class="mt-4 flex flex-col sm:flex-row gap-3">
           <a
-            href="https://t.me/YOUR_TELEGRAM_GROUP_OR_CHANNEL"
+            href="<?php echo $telelink?>"
             target="_blank"
             class="flex-1 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           >
@@ -231,16 +227,9 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
           </button>
         </div>
 
-        <!-- Optional QR (replace image) -->
-        <div class="mt-4 flex items-center gap-3">
-          <img src="images/telegram-qr.png" alt="Telegram QR (optional)" class="w-24 h-24 rounded border dark:border-gray-700 object-cover">
-          <div class="text-xs text-gray-500 dark:text-gray-400">
-            Replace <code>images/telegram-qr.png</code> with your Telegram QR image.
-          </div>
-        </div>
-
+       
         <!-- Hidden input for copy -->
-        <input id="tgLink" type="text" class="sr-only" value="https://t.me/YOUR_TELEGRAM_GROUP_OR_CHANNEL" readonly>
+        <input id="tgLink" type="text" class="sr-only" value="<?php echo $telelink?>" readonly>
       </div>
     </section>
 
