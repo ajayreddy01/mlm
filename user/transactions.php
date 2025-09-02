@@ -1,5 +1,7 @@
 <?php
 include '../includes/init.php';
+
+header('Loaction: wallet.php');
 // Logout logic
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
   // Destroy session
