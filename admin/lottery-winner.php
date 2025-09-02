@@ -56,7 +56,8 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        
+                        <?php $data = $admin->selectData('winners');
+                        var_dump($data);?>
                     </div>
                     <!-- / Content -->
 
