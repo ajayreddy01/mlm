@@ -9,19 +9,13 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
 }
 ?>
 <!doctype html>
-<html
-    lang="en"
-    class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
-    dir="ltr"
-    data-theme="theme-default"
-    data-assets-path="<?php echo BASE_URL; ?>/assets/"
-    data-template="vertical-menu-template-no-customizer"
-    data-style="light">
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr"
+    data-theme="theme-default" data-assets-path="<?php echo BASE_URL; ?>/assets/"
+    data-template="vertical-menu-template-no-customizer" data-style="light">
 
 <head>
     <meta charset="utf-8" />
-    <meta
-        name="viewport"
+    <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>Admin Dashboard - Plans</title>
@@ -52,10 +46,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                         <div class="col-lg-12 col-md-6">
                             <div class="mt-4">
                                 <!-- Button trigger modal -->
-                                <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    data-bs-toggle="modal"
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#modalCenter">
                                     Add New Plan
                                 </button>
@@ -66,54 +57,75 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Add New Plan</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                             </div>
-                                            <form method="post" action="<?php echo BASE_URL;?>/api/admin/insertDataPlans">
+                                            <form method="post"
+                                                action="<?php echo BASE_URL; ?>/api/admin/insertDataPlans" enctype="multipart/form-data">
                                                 <div class="modal-body">
                                                     <div class="row g-6">
                                                         <div class="col mb-6">
                                                             <label for="name" class="form-label">Device Name</label>
-                                                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter Device Name" required />
+                                                            <input type="text" id="name" name="name"
+                                                                class="form-control" placeholder="Enter Device Name"
+                                                                required />
                                                         </div>
                                                         <div class="col mb-6">
                                                             <label for="price" class="form-label">Product Price</label>
-                                                            <input type="number" id="price" name="price" class="form-control" placeholder="Enter Product Price" required />
+                                                            <input type="number" id="price" name="price"
+                                                                class="form-control" placeholder="Enter Product Price"
+                                                                required />
                                                         </div>
                                                     </div>
                                                     <div class="row g-6">
                                                         <div class="col mb-0">
-                                                            <label for="daily_income" class="form-label">Daily Income</label>
-                                                            <input type="number" id="daily_income" name="daily_income" class="form-control" placeholder="Enter Daily Income" required />
+                                                            <label for="daily_income" class="form-label">Daily
+                                                                Income</label>
+                                                            <input type="number" id="daily_income" name="daily_income"
+                                                                class="form-control" placeholder="Enter Daily Income"
+                                                                required />
                                                         </div>
                                                         <div class="col mb-0">
                                                             <label for="days" class="form-label">Number of Days</label>
-                                                            <input type="number" id="days" name="days" class="form-control" placeholder="Number of Days" required />
+                                                            <input type="number" id="days" name="days"
+                                                                class="form-control" placeholder="Number of Days"
+                                                                required />
                                                         </div>
                                                     </div>
                                                     <div class="row g-6">
                                                         <div class="col mb-0">
-                                                            <label for="bonus" class="form-label">Maturity Bonus Amount</label>
-                                                            <input type="number" id="bonus" name="bonus" class="form-control" placeholder="Maturity Bonus Amount" />
+                                                            <label for="bonus" class="form-label">Maturity Bonus
+                                                                Amount</label>
+                                                            <input type="number" id="bonus" name="bonus"
+                                                                class="form-control"
+                                                                placeholder="Maturity Bonus Amount" />
                                                         </div>
                                                         <div class="col mb-0">
-                                                            <label for="revenue" class="form-label">Total Revenue</label>
-                                                            <input type="number" id="revenue" name="revenue" class="form-control" placeholder="Total Revenue" />
+                                                            <label for="revenue" class="form-label">Total
+                                                                Revenue</label>
+                                                            <input type="number" id="revenue" name="revenue"
+                                                                class="form-control" placeholder="Total Revenue" />
                                                         </div>
                                                     </div>
                                                     <div class="row g-6">
                                                         <div class="col mb-0">
                                                             <label for="ror" class="form-label">Rate Of Return</label>
-                                                            <input type="number" id="ror" name="ror" class="form-control" placeholder="Rate of Return" />
+                                                            <input type="number" id="ror" name="ror"
+                                                                class="form-control" placeholder="Rate of Return" />
                                                         </div>
                                                         <div class="col mb-0">
-                                                            <label for="invitation_commission" class="form-label">Invitation Commission</label>
-                                                            <input type="number" id="invitation_commission" name="invitation_commission" class="form-control" placeholder="Invitation Commission" />
+                                                            <label for="invitation_commission"
+                                                                class="form-label">Invitation Commission</label>
+                                                            <input type="number" id="invitation_commission"
+                                                                name="invitation_commission" class="form-control"
+                                                                placeholder="Invitation Commission" />
                                                         </div>
                                                     </div>
                                                     <div class="row g-6">
                                                         <div class="col mb-0">
                                                             <label for="limit" class="form-label">Plan Limit</label>
-                                                            <input type="number" id="limit" name="limit" class="form-control" placeholder="Plan Limit" />
+                                                            <input type="number" id="limit" name="limit"
+                                                                class="form-control" placeholder="Plan Limit" />
                                                         </div>
                                                         <div class="col mb-0">
                                                             <label for="plantype" class="form-label">Plan Type</label>
@@ -128,12 +140,21 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                                     <div class="row g-6">
                                                         <div class="col">
                                                             <label for="desc" class="form-label">Description</label>
-                                                            <textarea name="desc" class="form-control" id="desc"></textarea>
+                                                            <textarea name="desc" class="form-control"
+                                                                id="desc"></textarea>
                                                         </div>
                                                     </div>
+                                                    <div class="row g-6">
+                                                        <div class="col mb-6">
+                                                            <label for="name" class="form-label"> Image</label>
+                                                            <input type="file" name="image" id="image">
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-label-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
                                                     <button type="submit" class="btn btn-primary">Save changes</button>
                                                 </div>
                                             </form>
@@ -152,7 +173,8 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Edit Plan</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <form id="editPlanForm" method="post">
                                         <input type="hidden" id="planId" name="planId">
@@ -160,47 +182,58 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                             <div class="row g-6">
                                                 <div class="col mb-6">
                                                     <label for="productName" class="form-label">Device Name</label>
-                                                    <input type="text" id="productName" name="name" class="form-control" required />
+                                                    <input type="text" id="productName" name="name" class="form-control"
+                                                        required />
                                                 </div>
                                                 <div class="col mb-6">
                                                     <label for="priceEdit" class="form-label">Product Price</label>
-                                                    <input type="number" id="priceEdit" name="price" class="form-control" required />
+                                                    <input type="number" id="priceEdit" name="price"
+                                                        class="form-control" required />
                                                 </div>
                                             </div>
                                             <div class="row g-6">
                                                 <div class="col mb-0">
                                                     <label for="dailyIncome" class="form-label">Daily Income</label>
-                                                    <input type="number" id="dailyIncome" name="daily_income" class="form-control" required />
+                                                    <input type="number" id="dailyIncome" name="daily_income"
+                                                        class="form-control" required />
                                                 </div>
                                                 <div class="col mb-0">
                                                     <label for="daysedit" class="form-label">Number of Days</label>
-                                                    <input type="number" id="daysedit" name="days" class="form-control" required />
+                                                    <input type="number" id="daysedit" name="days" class="form-control"
+                                                        required />
                                                 </div>
                                             </div>
                                             <div class="row g-6">
                                                 <div class="col mb-0">
-                                                    <label for="editbonus" class="form-label">Maturity Bonus Amount</label>
-                                                    <input type="number" id="editbonus" name="bonus" class="form-control" />
+                                                    <label for="editbonus" class="form-label">Maturity Bonus
+                                                        Amount</label>
+                                                    <input type="number" id="editbonus" name="bonus"
+                                                        class="form-control" />
                                                 </div>
                                                 <div class="col mb-0">
                                                     <label for="totalRevenue" class="form-label">Total Revenue</label>
-                                                    <input type="number" id="totalRevenue" name="revenue" class="form-control" />
+                                                    <input type="number" id="totalRevenue" name="revenue"
+                                                        class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="row g-6">
                                                 <div class="col mb-0">
                                                     <label for="rateOfReturn" class="form-label">Rate of Return</label>
-                                                    <input type="number" id="rateOfReturn" name="rate_of_return" class="form-control" />
+                                                    <input type="number" id="rateOfReturn" name="rate_of_return"
+                                                        class="form-control" />
                                                 </div>
                                                 <div class="col mb-0">
-                                                    <label for="invitationCommission" class="form-label">Invitation Commission</label>
-                                                    <input type="number" id="invitationCommission" name="invitation_commission" class="form-control" />
+                                                    <label for="invitationCommission" class="form-label">Invitation
+                                                        Commission</label>
+                                                    <input type="number" id="invitationCommission"
+                                                        name="invitation_commission" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="row g-6">
                                                 <div class="col mb-0">
                                                     <label for="purchaseLimit" class="form-label">Plan Limit</label>
-                                                    <input type="number" id="purchaseLimit" name="limit" class="form-control" />
+                                                    <input type="number" id="purchaseLimit" name="limit"
+                                                        class="form-control" />
                                                 </div>
                                                 <div class="col mb-0">
                                                     <label for="plantypeEdit" class="form-label">Plan Type</label>
@@ -220,7 +253,8 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-label-secondary"
+                                                data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
                                     </form>
@@ -242,12 +276,12 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
     <?php echo $template_admin->body_includes(); ?>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Fetch and render plans
             $.ajax({
                 url: '<?php echo BASE_URL; ?>/api/admin/getallplans',
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     try {
                         let plans = typeof response === "string" ? JSON.parse(response) : response;
                         let plansHTML = '';
@@ -299,7 +333,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
             });
 
             // Populate modal for editing
-            $(document).on('click', '.edit-plan', function() {
+            $(document).on('click', '.edit-plan', function () {
                 $('#planId').val($(this).data('id'));
                 $('#productName').val($(this).data('product-name'));
                 $('#priceEdit').val($(this).data('price'));
@@ -315,14 +349,14 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
             });
 
             // Save edited plan
-            $('#editPlanForm').on('submit', function(e) {
+            $('#editPlanForm').on('submit', function (e) {
                 e.preventDefault();
                 const formData = $(this).serialize();
                 $.ajax({
                     url: '<?php echo BASE_URL; ?>/api/admin/updateDataPlans',
                     method: 'POST',
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
                         try {
                             let res = typeof response === "string" ? JSON.parse(response) : response;
                             if (res === true || res.success === true) {
@@ -338,14 +372,14 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
             });
 
             // Update status
-            $(document).on('click', '.update-status', function() {
+            $(document).on('click', '.update-status', function () {
                 const planId = $(this).data('id');
                 const newStatus = $(this).data('status') === 'active' ? 'inactive' : 'active';
                 $.ajax({
                     url: '<?php echo BASE_URL; ?>/api/admin/updatePlanStatus',
                     method: 'POST',
                     data: { id: planId, status: newStatus },
-                    success: function() {
+                    success: function () {
                         location.reload();
                     }
                 });
@@ -353,4 +387,5 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
         });
     </script>
 </body>
+
 </html>

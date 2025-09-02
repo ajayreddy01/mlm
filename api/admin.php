@@ -11,9 +11,9 @@ try {
 
         //login
         case 'login';
-            
-            $email  = checkinput($_POST['email']);
-            $pass  = checkinput($_POST['password']);
+
+            $email = checkinput($_POST['email']);
+            $pass = checkinput($_POST['password']);
             $admin->adminLogin($email, $pass);
             //header("Location : ".BASE_URL."admin/dashboard.php");
             break;
@@ -92,6 +92,8 @@ try {
 
         //plans insert and update
         case 'insertDataPlans':
+            $image = $_FILES['image'];
+            $imageurl = $admin->uploadimage($image);
             $data = [
                 'product_name' => $_POST['name'],
                 'price' => $_POST['price'],
@@ -104,26 +106,48 @@ try {
                 'purchase_limit' => $_POST['limit'],
                 'level' => $_POST['plantype'],
                 'rules' => $_POST['desc'],
+                'image' => $imageurl,
 
             ];
             echo json_encode($admin->insertData('plans', $data));
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         case 'updateDataPlans':
-            $data = [
-                'product_name' => $_POST['name'],
-                'price' => $_POST['price'],
-                'daily_income' => $_POST['daily_income'],
-                'days' => $_POST['days'],
-                'bonus' => $_POST['editbonus'],
-                'total_revenue' => $_POST['revenue'],
-                'invitation_commission' => $_POST['invitation_commission'],
-                'rate_of_return' => $_POST['rate_of_return'],
-                'purchase_limit' => $_POST['limit'],
-                'level' => $_POST['plantype'],
-                'rules' => $_POST['desc'],
+            if (!empty($_FILES['image']['name'])) {
+                $image = $_FILES['image'];
+                $imageurl = $admin->uploadimage($image);
+                $data = [
+                    'product_name' => $_POST['name'],
+                    'price' => $_POST['price'],
+                    'daily_income' => $_POST['daily_income'],
+                    'days' => $_POST['days'],
+                    'bonus' => $_POST['editbonus'],
+                    'total_revenue' => $_POST['revenue'],
+                    'invitation_commission' => $_POST['invitation_commission'],
+                    'rate_of_return' => $_POST['rate_of_return'],
+                    'purchase_limit' => $_POST['limit'],
+                    'level' => $_POST['plantype'],
+                    'rules' => $_POST['desc'],
+                    'image' => $imageurl,
 
-            ];
+                ];
+            } else {
+                $data = [
+                    'product_name' => $_POST['name'],
+                    'price' => $_POST['price'],
+                    'daily_income' => $_POST['daily_income'],
+                    'days' => $_POST['days'],
+                    'bonus' => $_POST['editbonus'],
+                    'total_revenue' => $_POST['revenue'],
+                    'invitation_commission' => $_POST['invitation_commission'],
+                    'rate_of_return' => $_POST['rate_of_return'],
+                    'purchase_limit' => $_POST['limit'],
+                    'level' => $_POST['plantype'],
+                    'rules' => $_POST['desc'],
+
+                ];
+            }
+
             echo json_encode($admin->updateData('plans', $data, $_POST['planId']));
             break;
         case 'updatePlanStatus':
@@ -136,25 +160,42 @@ try {
 
         // insert and update lottery types 
         case 'insertDataLottery':
+            $image = $_FILES['image'];
+            $imageurl = $admin->uploadimage($image);
             $data = [
                 'name' => $_POST['name'],
                 'ticket' => $_POST['price'],
                 'winning' => $_POST['prize'],
                 'type' => $_POST['plantype'],
                 'description' => $_POST['desc'],
+                'image' => $imageurl,
             ];
-            
+
             echo json_encode($admin->insertData('lottery_types', $data));
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         case 'updateDataLottery':
-            $data = [
-                'name' => $_POST['editname'],
-                'ticket' => $_POST['editprice'],
-                'winning' => $_POST['editprize'],
-                'type' => $_POST['editplantype'],
-                'description' => $_POST['editdesc'],
-            ];
+            if (!empty($_FILES['image']['name'])) {
+                $image = $_FILES['image'];
+                $imageurl = $admin->uploadimage($image);
+                $data = [
+                    'name' => $_POST['editname'],
+                    'ticket' => $_POST['editprice'],
+                    'winning' => $_POST['editprize'],
+                    'type' => $_POST['editplantype'],
+                    'description' => $_POST['editdesc'],
+                    'image' => $imageurl,
+                ];
+            } else {
+                $data = [
+                    'name' => $_POST['editname'],
+                    'ticket' => $_POST['editprice'],
+                    'winning' => $_POST['editprize'],
+                    'type' => $_POST['editplantype'],
+                    'description' => $_POST['editdesc'],
+                ];
+            }
+
             echo json_encode($admin->updateData('lottery_types', $data, $_POST['editid']));
             break;
         case 'updateStatusLottery':

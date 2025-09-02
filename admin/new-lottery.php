@@ -78,7 +78,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                                 data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <form action="<?php echo BASE_URL; ?>api/admin/insertDataLottery" method="post">
+                                        <form action="<?php echo BASE_URL; ?>api/admin/insertDataLottery" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row g-6">
                                                     <div class="col mb-6">
@@ -125,6 +125,12 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                                     <div class="col mb-6">
                                                         <label for="name" class="form-label"> Description</label>
                                                         <textarea name="desc" class="form-control" id="desc"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row g-6">
+                                                    <div class="col mb-6">
+                                                        <label for="name" class="form-label"> Image</label>
+                                                        <input type="file" name="image" id="image">
                                                     </div>
                                                 </div>
 
