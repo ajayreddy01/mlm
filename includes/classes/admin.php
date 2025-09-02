@@ -246,7 +246,7 @@ function getLotterySales($period)
 
         $stmt = $this->pdo->prepare("SELECT SUM(w.prize_amount) AS lottery_withdrawals
                            FROM winners w
-                           JOIN lotteries l ON w.lottery_id = l.id
+                           
                            WHERE DATE(w.created_at) BETWEEN :start_date AND :end_date");
 
         $stmt->execute(['start_date' => $start_date, 'end_date' => $end_date]);
