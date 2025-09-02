@@ -154,11 +154,10 @@ class admin
         $start_date = $dates[0];
         $end_date = $dates[1];
 
-        $stmt = $this->pdo->prepare("SELECT SUM(d.amount) AS total_withdrawals
-                           FROM deposits d
-                           JOIN accounts a ON d.userid = a.userid
-                           WHERE d.status = 'success'
-                           AND DATE(d.created_at) BETWEEN :start_date AND :end_date");
+        $stmt = $this->pdo->prepare("SELECT SUM(amount) AS total_withdrawals
+                           FROM withdraws
+                           WHERE status = 'success'
+                           AND DATE(created_at) BETWEEN :start_date AND :end_date");
 
         $stmt->execute(['start_date' => $start_date, 'end_date' => $end_date]);
 
@@ -203,22 +202,26 @@ class admin
      * @param string $end_date End date of the period
      * @return float Total lottery sales in INR
      */
-    function getLotterySales($period)
-    {
-        $dates = $this->getDateRange($period);
-        $start_date = $dates[0];
-        $end_date = $dates[1];
+   function getLotterySales($period)
+{
+    $dates = $this->getDateRange($period);
+    $start_date = $dates[0];
+    $end_date = $dates[1];
 
-        $stmt = $this->pdo->prepare("SELECT SUM(lottery_amount) AS lottery_sales
-                           FROM tickets t
-                           JOIN lotteries l ON t.lottery_id = l.id
-                           WHERE DATE(t.created_at) BETWEEN :start_date AND :end_date");
+    // Multiply ticket price by number of tickets sold in date range
+    $stmt = $this->pdo->prepare("
+        SELECT COALESCE(SUM(l.ticket), 0) * COUNT(t.id) AS lottery_sales
+        FROM tickets t
+        JOIN lotteries l ON t.lottery_id = l.id
+        WHERE DATE(t.created_at) BETWEEN :start_date AND :end_date
+    ");
 
-        $stmt->execute(['start_date' => $start_date, 'end_date' => $end_date]);
+    $stmt->execute(['start_date' => $start_date, 'end_date' => $end_date]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['lottery_sales'] ?? 0.00;
-    }
+    return $result['lottery_sales'] ?? 0.00;
+}
+
 
     // Example output
     // getLotterySales('2024-12-01', '2024-12-03'); // Returns total lottery sales for the given period
