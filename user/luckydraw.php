@@ -179,7 +179,7 @@ $userdata = $admin->selectDataWithConditions('users', null, ['userid' => $_SESSI
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
         <!-- Banner Image -->
         <div class="h-40 w-full">
-          <img src="images/luckydraw.png" 
+          <img src="' . htmlspecialchars($row['image']) . '" 
                alt="Lucky Draw Banner" 
                class="w-full h-full object-cover">
         </div>
