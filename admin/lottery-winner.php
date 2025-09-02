@@ -52,6 +52,7 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <?php
                         $data = $admin->selectData('winners');
+                        $data = array_reverse($data);
                         ?>
 
                         <?php if (!empty($data)): ?>
