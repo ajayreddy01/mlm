@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "    'telegram' => '" . addslashes($telegram) . "',\n" .
         "];\n";
 
-    file_put_contents(__DIR__ . '../includes/social.php', $configContent);
+    file_put_contents( '../includes/social.php', $configContent);
 
     header("Location: dashboard.php?updated=1");
     exit;
