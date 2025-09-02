@@ -84,12 +84,12 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                                                 <div class="card-title mb-auto">
                                                     <form method="POST" action="update_links.php">
                                                         <label>WhatsApp Link</label>
-                                                        <input class="form-control" type="url" name="whatsapp" id="whatsapp"
+                                                        <input class="form-control mb-3" type="url" name="whatsapp" id="whatsapp"
                                                             value="<?php echo htmlspecialchars($whtsapplink); ?>"
                                                             required>
 
                                                         <label>Telegram Link</label>
-                                                        <input type="url" class="form-control"name="telegram" id="telegram"
+                                                        <input type="url" class="form-control mb-3" name="telegram" id="telegram"
                                                             value="<?php echo htmlspecialchars($telelink); ?>" required>
 
                                                         <button class="btn btn-primary" type="submit">Update Links</button>
