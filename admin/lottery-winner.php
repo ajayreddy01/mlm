@@ -10,19 +10,13 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
 ?>
 <!doctype html>
 
-<html
-    lang="en"
-    class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
-    dir="ltr"
-    data-theme="theme-default"
-    data-assets-path="<?php echo BASE_URL; ?>/assets/"
-    data-template="vertical-menu-template-no-customizer"
-    data-style="light">
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr"
+    data-theme="theme-default" data-assets-path="<?php echo BASE_URL; ?>/assets/"
+    data-template="vertical-menu-template-no-customizer" data-style="light">
 
 <head>
     <meta charset="utf-8" />
-    <meta
-        name="viewport"
+    <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>Demo : Dashboard - Analytics | sneat - Bootstrap Dashboard PRO</title>
@@ -56,9 +50,42 @@ if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <?php $data = $admin->selectData('winners');
-                        var_dump($data);?>
+                        <?php
+                        $data = $admin->selectData('winners');
+                        ?>
+
+                        <?php if (!empty($data)): ?>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Lottery ID</th>
+                                            <th>User ID</th>
+                                            <th>Prize Amount</th>
+                                            <th>Created At</th>
+                                            <th>Ticket Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($data as $row): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($row['id']); ?></td>
+                                                <td><?= htmlspecialchars($row['lottery_id']); ?></td>
+                                                <td><?= htmlspecialchars($row['user_id']); ?></td>
+                                                <td><?= htmlspecialchars($row['prize_amount']); ?></td>
+                                                <td><?= htmlspecialchars($row['created_at']); ?></td>
+                                                <td><?= htmlspecialchars($row['ticket_number']); ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <p>No winners found.</p>
+                        <?php endif; ?>
                     </div>
+
                     <!-- / Content -->
 
                     <!-- Footer -->
