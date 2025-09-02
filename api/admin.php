@@ -19,7 +19,14 @@ try {
             break;
         //dashboard data
         case 'getDashboardStats':
+
+
             $result = [
+                'target_meter' => [
+                    'plans' => 50,
+                    'lottery' => 10,
+                    'total_percentage' => 60
+                ],
                 'total_sales' => [
                     'today' => $admin->getTotalSales('today'),
                     'this_week' => $admin->getTotalSales('this_week'),
