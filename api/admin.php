@@ -18,6 +18,49 @@ try {
             //header("Location : ".BASE_URL."admin/dashboard.php");
             break;
         //dashboard data
+        case 'getDashboardStats':
+            $result = [
+                'total_sales' => [
+                    'today' => $admin->getTotalSales('today'),
+                    'this_week' => $admin->getTotalSales('this_week'),
+                    'this_month' => $admin->getTotalSales('this_month'),
+                    'all_time' => $admin->getTotalSales('all_time')
+                ],
+                'total_deposits' => [
+                    'today' => $admin->getTotalDeposits('today'),
+                    'this_week' => $admin->getTotalDeposits('this_week'),
+                    'this_month' => $admin->getTotalDeposits('this_month'),
+                    'all_time' => $admin->getTotalDeposits('all_time')
+                ],
+                'total_withdrawals' => [
+                    'today' => $admin->getTotalWithdrawals('today'),
+                    'this_week' => $admin->getTotalWithdrawals('this_week'),
+                    'this_month' => $admin->getTotalWithdrawals('this_month'),
+                    'all_time' => $admin->getTotalWithdrawals('all_time')
+                ],
+                'new_customers' => [
+                    'today' => $admin->getNewCustomers('today'),
+                    'this_week' => $admin->getNewCustomers('this_week'),
+                    'this_month' => $admin->getNewCustomers('this_month'),
+                    'all_time' => $admin->getNewCustomers('all_time')
+                ],
+                'lottery_sales' => [
+                    'today' => $admin->getLotterySales('today'),
+                    'this_week' => $admin->getLotterySales('this_week'),
+                    'this_month' => $admin->getLotterySales('this_month'),
+                    'all_time' => $admin->getLotterySales('all_time')
+                ],
+                'lottery_withdrawals' => [
+                    'today' => $admin->getLotteryWithdrawals('today'),
+                    'this_week' => $admin->getLotteryWithdrawals('this_week'),
+                    'this_month' => $admin->getLotteryWithdrawals('this_month'),
+                    'all_time' => $admin->getLotteryWithdrawals('all_time')
+                ]
+            ];
+
+            echo json_encode($result);
+            break;
+
         case 'getTotalSales':
             // Prepare the result array
             $result = [
